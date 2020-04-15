@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">baselibrary</string>
+
+    <string name="prompt_message">提示信息</string>
+    <string name="permission_lack">当前应用缺少必要权限，该功能暂时无法使用。如若需要，请点击【确定】按钮前往设置中心进行权限授权。</string>
+    <string name="ok">确定</string>
+    <string name="cancel">取消</string>
+    <string name="dialog_loading">加载中...</string>
+    <string name="network_connection_failed">network_connection_failed</string>
+    <string name="network_request_failed">network_request_failed</string>
+    <string name="network_connection_timeout">network_connection_timeout</string>
+    <string name="json_failed">json_failed</string>
+    <string name="data_null">data_null</string>
+</resources>

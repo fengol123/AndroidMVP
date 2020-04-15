@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">MVP库</string>
+    <string name="url_reset">重置URL为%s的默认值</string>
+</resources>

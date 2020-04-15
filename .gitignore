@@ -1,0 +1,17 @@
+*.iml
+.gradle
+/local.properties
+/.idea/
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+/app/*.apk
+app/release/
+/SwipeBackLayout/build
+app/check/release/
+app/check/release/
+*.apk
+/AVMP_SkinLibrary/build
+app/dev/release/
+app/Test/release/output.json

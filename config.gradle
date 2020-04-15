@@ -1,0 +1,21 @@
+ext {
+    //android开发版本配置
+    android = [
+            compileSdkVersion: 27,
+            buildToolsVersion: "29.0.1",
+            applicationId    : "com.modobay.modohouse",
+            minSdkVersion    : 19,
+            targetSdkVersion : 27,
+            versionCode      : 204,
+            versionName      : "3.3.8",
+    ]
+    //version配置
+    versions = [
+            "support-version": "27.1.1",
+    ]
+    //support配置
+    support = [
+            'appcompat-v7'            : "com.android.support:appcompat-v7:${versions["support-version"]}",
+            'appcompat-v4'            : "com.android.support:support-v4:${versions["support-version"]}",
+    ]
+}
