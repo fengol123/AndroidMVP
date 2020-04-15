@@ -5,31 +5,14 @@ import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.fdb.baselibrary.utils.ToastUtil;
 
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
-
-/**
- * Fragment基类  已实现以下功能
- * <pre>
- *     1.butterknife绑定控件
- *     2.可实现rxjava生命周期绑定
- *     3.显示和隐藏loadingdialog
- *     4.显示错误信息
- *     5.mvp架构
- * </pre>
- */
-public abstract class BaseFragment<P extends IBasePresenter> extends Fragment implements IBaseDisplay {
-    protected Unbinder unbinder;
-    protected AppCompatActivity mActivity;
-    protected Context mContext;
+public abstract class BaseFragment<P extends IBasePresenter> extends Fragment implements IBaseView {
     private P mPresenter;
 
     @Override
@@ -39,8 +22,6 @@ public abstract class BaseFragment<P extends IBasePresenter> extends Fragment im
 
     @Override
     public void onAttach(Context context) {
-        mActivity = (AppCompatActivity) context;
-        mContext = context;
         super.onAttach(context);
     }
 
@@ -49,7 +30,6 @@ public abstract class BaseFragment<P extends IBasePresenter> extends Fragment im
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle
             savedInstanceState) {
         View mView = inflater.inflate(getLayoutId(), container, false);
-        unbinder = ButterKnife.bind(this, mView);
         return mView;
     }
 
@@ -61,28 +41,20 @@ public abstract class BaseFragment<P extends IBasePresenter> extends Fragment im
     }
 
     @Override
-    public void showProgressDialog() {
+    public void showLoading() {
         if (getActivity() instanceof BaseActivity)
-            ((BaseActivity) getActivity()).showProgressDialog();
+            ((BaseActivity) getActivity()).showLoading();
     }
 
     @Override
-    public void hideProgressDialog() {
+    public void hideLoading() {
         if (getActivity() instanceof BaseActivity)
-            ((BaseActivity) getActivity()).hideProgressDialog();
+            ((BaseActivity) getActivity()).hideLoading();
     }
 
     @Override
     public void showMessage(String msg) {
         ToastUtil.s(msg);
-    }
-
-
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        unbinder.unbind();
     }
 
     protected void initPresenter() {

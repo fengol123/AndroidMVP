@@ -2,8 +2,6 @@ package com.fdb.baselibrary.base;
 
 import android.app.Application;
 
-import com.fdb.baselibrary.ConfigModule;
-import com.fdb.baselibrary.utils.ManifestParser;
 import com.fdb.baselibrary.utils.activityManager.BaseActivityLifecycleCallbacks;
 import com.squareup.leakcanary.LeakCanary;
 
@@ -19,7 +17,7 @@ import com.squareup.leakcanary.LeakCanary;
  */
 public class BaseApplication extends Application {
     private static BaseApplication mInstance;
-    private static ConfigModule mConfigModule; //全局配置
+//    private static ConfigModule mConfigModule; //全局配置
     //监听所有activity的生命周期
     private BaseActivityLifecycleCallbacks mActivityLifeCallbacks = new BaseActivityLifecycleCallbacks();
 
@@ -30,12 +28,12 @@ public class BaseApplication extends Application {
         return mInstance;
     }
 
-    public static ConfigModule getConfigModule() {
-        return mConfigModule;
-    }
+//    public static ConfigModule getConfigModule() {
+//        return mConfigModule;
+//    }
 
     @Override
-    public final void onCreate() {
+    public void onCreate() {
         super.onCreate();
         //LeakCanary初始化
         if (LeakCanary.isInAnalyzerProcess(this)) {
@@ -52,7 +50,7 @@ public class BaseApplication extends Application {
         registerActivityLifecycleCallbacks(mActivityLifeCallbacks);
 
         //初始化config
-        mConfigModule = new ManifestParser(this).parse();
+//        mConfigModule = new ManifestParser(this).parse();
 
 
         initialize();
