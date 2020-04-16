@@ -1,6 +1,8 @@
 package com.fdb.mvpdemo.ui.login.loginpage;
 
 
+import com.fdb.mvpdemo.bean.LoginBean;
+
 import java.util.HashMap;
 
 import retrofit2.http.Body;
@@ -10,18 +12,7 @@ import rx.Observable;
 
 public interface AppService {
     @POST(HostUrl.ACCOUNT_LOGIN)
-    Observable<Object> login(@HeaderMap HashMap<String, String> header, @Body HashMap Body);
-
-    //
-//    /**
-//     * 书城首页
-//     */
-//    @POST(HostUrl.App.VERSION)
-//    Observable<BaseNetBean<VersionBean>> version(@HeaderMap HashMap<String, String> header, @Body HashMap Body);
-
-
-
-
+    Observable<LoginBean> login(@HeaderMap HashMap<String, String> header, @Body HashMap Body);
 }
 
 
