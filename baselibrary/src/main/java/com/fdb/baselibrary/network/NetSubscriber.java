@@ -2,6 +2,7 @@ package com.fdb.baselibrary.network;
 
 import com.fdb.baselibrary.BuildConfig;
 import com.fdb.baselibrary.R;
+import com.fdb.baselibrary.base.BaseBean;
 import com.fdb.baselibrary.utils.L;
 import com.fdb.baselibrary.utils.ToastUtil;
 import com.google.gson.JsonParseException;
@@ -21,7 +22,7 @@ import rx.Subscriber;
  *     2.成功时返回数据
  * </pre>
  */
-public abstract class NetSubscriber<T> extends Subscriber<T> implements NetCallback<T> {
+public abstract class NetSubscriber<T extends BaseBean> extends Subscriber<T> implements NetCallback<T> {
     private NetCallback<T> mNetCallback;
 
     public NetSubscriber() {
@@ -34,7 +35,15 @@ public abstract class NetSubscriber<T> extends Subscriber<T> implements NetCallb
 
     @Override
     final public void onNext(T t) {
-        onSuccess(t);
+        if (t.success) {
+            onSuccess(t);
+        } else {
+            if (Constans.TOKEN_ERROR.equals(t.errorCode)) {
+                onTokenError();
+            } else {
+                onDataError(new ApiException(t.errorCode, t.errorMessage));
+            }
+        }
     }
 
     @Override
@@ -43,7 +52,7 @@ public abstract class NetSubscriber<T> extends Subscriber<T> implements NetCallb
             L.P(e);
         }
 
-        if (e instanceof HttpException) {             //HTTP错误
+        if (e instanceof HttpException) {  //HTTP错误
             onNetError();
         } else if (e instanceof ConnectException) {
             //网络连接失败
@@ -57,15 +66,6 @@ public abstract class NetSubscriber<T> extends Subscriber<T> implements NetCallb
         } else if (e instanceof JsonParseException) {
             //json解析错误
             onNetError();
-        } else if (e instanceof RxJavaNullException) {//RxJava2不能发送null
-            //数据为null
-            onNetError();
-        } else if (e instanceof ApiException) {
-            if (Constans.TOKEN_ERROR.equals(((ApiException) e).code)) {
-                onTokenError();
-            } else {
-                onDataError((ApiException) e);
-            }
         } else {
             onNetError();
         }

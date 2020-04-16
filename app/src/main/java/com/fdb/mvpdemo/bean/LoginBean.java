@@ -1,5 +1,7 @@
 package com.fdb.mvpdemo.bean;
 
+import com.fdb.baselibrary.base.OldBaseBean;
+
 /**
  * Desc
  * Author dontlo

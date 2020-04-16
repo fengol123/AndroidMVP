@@ -2,6 +2,7 @@ package com.fdb.baselibrary.network;
 
 import com.fdb.baselibrary.BuildConfig;
 import com.fdb.baselibrary.R;
+import com.fdb.baselibrary.base.OldBaseBean;
 import com.fdb.baselibrary.utils.JsonUtils;
 import com.fdb.baselibrary.utils.L;
 import com.fdb.baselibrary.utils.StringUtils;
@@ -25,7 +26,7 @@ import rx.Subscriber;
  *     2.成功时返回数据
  * </pre>
  */
-public abstract class OldNetSubscriber<T> extends Subscriber<T> implements NetCallback<T> {
+public abstract class OldNetSubscriber<T extends OldBaseBean> extends Subscriber<T> implements NetCallback<T> {
     private NetCallback<T> mNetCallback;
 
     public OldNetSubscriber() {
@@ -61,11 +62,6 @@ public abstract class OldNetSubscriber<T> extends Subscriber<T> implements NetCa
         } else if (e instanceof JsonParseException) {
             //json解析错误
             onNetError();
-        } else if (e instanceof RxJavaNullException) {//RxJava2不能发送null
-            //数据为null
-            onNetError();
-        } else if (e instanceof ApiException) {
-            onDataError((ApiException) e); //旧接口不会回调这里
         } else {
             onNetError();
         }
