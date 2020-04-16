@@ -1,4 +1,4 @@
-package com.fdb.mvpdemo.ui.login.loginpage;
+package com.fdb.mvpdemo.constant;
 
 /**
  * @author by DELL

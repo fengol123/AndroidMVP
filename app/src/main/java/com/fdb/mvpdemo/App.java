@@ -1,6 +1,8 @@
-package com.fdb.mvpdemo.ui.login.loginpage;
+package com.fdb.mvpdemo;
 
 import com.fdb.baselibrary.base.BaseApplication;
+import com.fdb.baselibrary.network.RetrofitClient;
+import com.fdb.mvpdemo.constant.HostUrl;
 
 /**
  * Desc
@@ -11,6 +13,6 @@ public class App extends BaseApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        RetrofitClient.setmHostUrl(HostUrl.HOST_URL);
     }
 }

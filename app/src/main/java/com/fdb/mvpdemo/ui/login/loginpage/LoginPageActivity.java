@@ -1,25 +1,26 @@
 package com.fdb.mvpdemo.ui.login.loginpage;
 
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-
+import com.fdb.baselibrary.base.BaseActivity;
 import com.fdb.baselibrary.network.NetSubscriber;
 import com.fdb.baselibrary.network.OldNetSubscriber;
-import com.fdb.baselibrary.network.RetrofitClient;
 import com.fdb.baselibrary.utils.L;
 import com.fdb.baselibrary.utils.SPUtil;
+import com.fdb.mvpdemo.R;
 import com.fdb.mvpdemo.bean.HouseCollectListBean;
 import com.fdb.mvpdemo.bean.LoginBean;
+import com.fdb.mvpdemo.model.AppModel;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class Login2Activity extends AppCompatActivity {
+public class LoginPageActivity extends BaseActivity<LoginPageContract.Presenter> implements LoginPageContract.View {
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_login;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        RetrofitClient.setmHostUrl(HostUrl.HOST_URL);
+    protected void initialize() {
         AppModel.login()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -39,6 +40,15 @@ public class Login2Activity extends AppCompatActivity {
                     public void onSuccess(HouseCollectListBean data) {
                     }
                 });
+    }
+
+    @Override
+    public void showError() {
+
+    }
+
+    @Override
+    public void enterHome() {
 
     }
 }

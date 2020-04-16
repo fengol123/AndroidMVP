@@ -1,4 +1,4 @@
-package com.fdb.mvpdemo.ui.login.loginpage;
+package com.fdb.mvpdemo.model;
 
 
 import com.fdb.baselibrary.network.RetrofitClient;
@@ -6,6 +6,7 @@ import com.fdb.mvpdemo.base.ModelHeader;
 import com.fdb.mvpdemo.base.ModelParameter;
 import com.fdb.mvpdemo.bean.HouseCollectListBean;
 import com.fdb.mvpdemo.bean.LoginBean;
+import com.fdb.mvpdemo.service.AppService;
 
 import rx.Observable;
 
