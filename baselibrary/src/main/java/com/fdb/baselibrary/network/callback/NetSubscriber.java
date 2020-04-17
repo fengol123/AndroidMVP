@@ -1,12 +1,12 @@
 package com.fdb.baselibrary.network.callback;
 
+import android.support.annotation.NonNull;
+
 import com.fdb.baselibrary.BuildConfig;
-import com.fdb.baselibrary.R;
-import com.fdb.baselibrary.bean.BaseBean;
 import com.fdb.baselibrary.Constans;
+import com.fdb.baselibrary.bean.BaseBean;
 import com.fdb.baselibrary.bean.DataErrorBean;
 import com.fdb.baselibrary.utils.L;
-import com.fdb.baselibrary.utils.ToastUtil;
 import com.google.gson.JsonParseException;
 
 import java.net.ConnectException;
@@ -15,7 +15,6 @@ import java.net.UnknownHostException;
 
 import retrofit2.adapter.rxjava.HttpException;
 import rx.Subscriber;
-import rx.Subscription;
 
 
 /**
@@ -25,26 +24,22 @@ import rx.Subscription;
  *     2.成功时返回数据
  * </pre>
  */
-public abstract class NetSubscriber<T extends BaseBean> extends Subscriber<T> implements NetCallback<T> {
+public class NetSubscriber<T extends BaseBean> extends Subscriber<T> {
     private NetCallback<T> mNetCallback;
 
-    public NetSubscriber() {
-
-    }
-
-    public NetSubscriber(NetCallback<T> netCallback) {
+    public NetSubscriber(@NonNull NetCallback<T> netCallback) {
         mNetCallback = netCallback;
     }
 
     @Override
     final public void onNext(T t) {
         if (t.success) {
-            onSuccess(t);
+            mNetCallback.onSuccess(t);
         } else {
             if (Constans.TOKEN_ERROR.equals(t.errorCode)) {
-                onTokenError();
+                mNetCallback.onTokenError();
             } else {
-                onDataError(new DataErrorBean(t.errorCode, t.errorMessage));
+                mNetCallback.onDataError(new DataErrorBean(t.errorCode, t.errorMessage));
             }
         }
     }
@@ -56,88 +51,32 @@ public abstract class NetSubscriber<T extends BaseBean> extends Subscriber<T> im
         }
 
         if (e instanceof HttpException) {  //HTTP错误
-            onNetError();
+            mNetCallback.onNetError();
         } else if (e instanceof ConnectException) {
             //网络连接失败
-            onNetError();
+            mNetCallback.onNetError();
         } else if (e instanceof UnknownHostException) {
             //网络请求失败
-            onNetError();
+            mNetCallback.onNetError();
         } else if (e instanceof SocketTimeoutException) {
             //网络连接超时
-            onNetError();
+            mNetCallback.onNetError();
         } else if (e instanceof JsonParseException) {
             //json解析错误
-            onNetError();
+            mNetCallback.onNetError();
         } else {
-            onNetError();
+            mNetCallback.onNetError();
         }
     }
 
     @Override
     final public void onStart() {
-        if (mNetCallback != null) {
-            mNetCallback.onPrepare(this);
-        } else {
-            onPrepare(this);
-        }
+        mNetCallback.onPrepare(this);
     }
 
     @Override
     final public void onCompleted() {
-        if (mNetCallback != null) {
-            mNetCallback.onFinish();
-        } else {
-            onFinish();
-        }
-    }
-
-    @Override
-    public void onNetError() {
-        if (mNetCallback != null) {
-            mNetCallback.onNetError();
-        } else {
-            ToastUtil.s(R.string.network_connection_failed);
-        }
-    }
-
-    @Override
-    public void onDataError(DataErrorBean error) {
-        if (mNetCallback != null) {
-            mNetCallback.onDataError(error);
-        } else {
-            if (error != null && error.message != null) {
-                ToastUtil.s(error.message);
-            } else {
-                ToastUtil.s(R.string.data_error);
-            }
-        }
-    }
-
-    @Override
-    public void onSuccess(T data) {
-        if (mNetCallback != null) {
-            mNetCallback.onSuccess(data);
-        }
-    }
-
-    @Override
-    public void onPrepare(Subscription subscription) {
-        if (mNetCallback != null) {
-            mNetCallback.onPrepare(this);
-        }
-    }
-
-    @Override
-    public void onFinish() {
-        if (mNetCallback != null) {
-            mNetCallback.onFinish();
-        }
-    }
-
-    public void onTokenError() {
-        //token的错误的默认UI操作, 如跳转登录页
-
+        mNetCallback.onFinish();
     }
 
 }

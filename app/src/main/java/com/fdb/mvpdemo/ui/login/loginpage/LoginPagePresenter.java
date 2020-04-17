@@ -12,7 +12,6 @@ import com.fdb.mvpdemo.bean.LoginBean;
 import com.fdb.mvpdemo.model.AppModel;
 
 import rx.Subscription;
-import rx.functions.Func1;
 
 /**
  * Desc
@@ -24,18 +23,6 @@ public class LoginPagePresenter extends BasePresenter<LoginPageContract.View> im
     @Override
     public void login(String userName, String psw) {
         Subscription subscription = AppModel.login(userName, psw)
-                .map(new Func1<LoginBean, LoginBean>() {
-                    @Override
-                    public LoginBean call(LoginBean loginBean) {
-                        L.i("sleep");
-                        try {
-                            Thread.sleep(3000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        return loginBean;
-                    }
-                })
                 .compose(new ThreadTransformer<LoginBean>())
                 .subscribe(new OldNetSubscriber<LoginBean>(new CommonNetCallbackImpl<LoginBean>(getView()) {
                     @Override
