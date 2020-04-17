@@ -6,6 +6,8 @@ import com.fdb.baselibrary.R;
 import com.fdb.baselibrary.base.IBaseView;
 import com.fdb.baselibrary.utils.StringUtils;
 
+import rx.Subscription;
+
 /**
  * Desc
  * Author dontlo
@@ -38,8 +40,8 @@ public class CommonNetCallbackImpl<T> extends BaseNetCallback<T> {
     }
 
     @Override
-    public void onPrepare() {
-        mBaseView.showLoading();
+    public void onPrepare(Subscription subscription) {
+        mBaseView.showLoading(subscription);
     }
 
     @Override

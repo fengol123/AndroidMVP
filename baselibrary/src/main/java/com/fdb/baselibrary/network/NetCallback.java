@@ -2,6 +2,8 @@ package com.fdb.baselibrary.network;
 
 import android.support.annotation.NonNull;
 
+import rx.Subscription;
+
 /**
  * Desc
  * Author dontlo
@@ -33,7 +35,7 @@ public interface NetCallback<T> {
     /**
      * 网络请求开始
      */
-    public void onPrepare();
+    public void onPrepare(Subscription subscription);
 
     /**
      * 网络请求结束，无论成功或者失败

@@ -13,6 +13,7 @@ import java.net.UnknownHostException;
 
 import retrofit2.adapter.rxjava.HttpException;
 import rx.Subscriber;
+import rx.Subscription;
 
 
 /**
@@ -74,9 +75,9 @@ public abstract class NetSubscriber<T extends BaseBean> extends Subscriber<T> im
     @Override
     final public void onStart() {
         if (mNetCallback != null) {
-            mNetCallback.onPrepare();
+            mNetCallback.onPrepare(this);
         } else {
-            onPrepare();
+            onPrepare(this);
         }
     }
 
@@ -119,9 +120,9 @@ public abstract class NetSubscriber<T extends BaseBean> extends Subscriber<T> im
     }
 
     @Override
-    public void onPrepare() {
+    public void onPrepare(Subscription subscription) {
         if (mNetCallback != null) {
-            mNetCallback.onPrepare();
+            mNetCallback.onPrepare(this);
         }
     }
 

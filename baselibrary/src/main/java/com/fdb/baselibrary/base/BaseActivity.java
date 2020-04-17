@@ -1,6 +1,7 @@
 package com.fdb.baselibrary.base;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
@@ -8,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.fdb.baselibrary.utils.ToastUtil;
 import com.fdb.baselibrary.widget.LoadingDialog;
+
+import rx.Subscription;
 
 /**
  * Activity基类 已实现以下功能
@@ -26,7 +29,6 @@ public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatAc
     private P mPresenter;
     private LoadingDialog mLoadingDialog;
     private int mLoadingCount;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,12 +49,20 @@ public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatAc
     }
 
     @Override
-    public void showLoading() {
+    public void showLoading(Subscription subscription) {
         mLoadingCount++;
         if (mLoadingDialog == null) {
             mLoadingDialog = new LoadingDialog(this);
+            mLoadingDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    mLoadingDialog = null;
+                    mLoadingCount = 0;
+                }
+            });
             mLoadingDialog.show();
         }
+        mLoadingDialog.addSubscription(subscription);
     }
 
     @Override
@@ -64,7 +74,6 @@ public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatAc
         if (mLoadingCount == 0) {
             if (mLoadingDialog != null) {
                 mLoadingDialog.dismiss();
-                mLoadingDialog = null;
             }
         }
     }

@@ -1,5 +1,7 @@
 package com.fdb.baselibrary.network;
 
+import rx.Subscription;
+
 /**
  * Desc
  * Author dontlo
@@ -13,7 +15,7 @@ public abstract class BaseNetCallback<T> implements NetCallback<T> {
     }
 
     @Override
-    public void onPrepare() {
+    public void onPrepare(Subscription subscription) {
 
     }
 

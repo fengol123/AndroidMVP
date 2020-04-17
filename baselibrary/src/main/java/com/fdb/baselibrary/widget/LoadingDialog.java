@@ -5,10 +5,13 @@ import android.content.Context;
 import android.support.annotation.StringRes;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.fdb.baselibrary.R;
+import com.fdb.baselibrary.utils.L;
+
+import rx.Subscription;
+import rx.subscriptions.CompositeSubscription;
 
 /**
  * 加载中的loadingdialog
@@ -16,6 +19,7 @@ import com.fdb.baselibrary.R;
 public class LoadingDialog extends ProgressDialog {
     TextView mLoadingTextView;
     View mView;
+    private CompositeSubscription mCompositeSubscription;
 
     /**
      * 这里的Context 必须用actiivty 不能用applicationContext
@@ -33,7 +37,6 @@ public class LoadingDialog extends ProgressDialog {
 
     public LoadingDialog(Context context, String msg) {
         super(context, R.style.LoadingDialogStyle);
-
         mView = View.inflate(context, R.layout.dialog_loading, null);
         mLoadingTextView = (TextView) mView.findViewById(R.id.mLoadingTextView);
         if (!TextUtils.isEmpty(msg)) {
@@ -45,7 +48,6 @@ public class LoadingDialog extends ProgressDialog {
         this.setCancelable(true);
     }
 
-
     @Override
     public void show() {
         try {
@@ -55,7 +57,8 @@ public class LoadingDialog extends ProgressDialog {
                 super.show();
             //setContentView（）一定要在show之后调用
             this.setContentView(mView);
-        } catch (WindowManager.BadTokenException exception) {
+        } catch (Exception e) {
+            L.P(e);
         }
     }
 
@@ -64,6 +67,7 @@ public class LoadingDialog extends ProgressDialog {
         try {
             super.dismiss();
         } catch (Exception e) {
+            L.P(e);
             //捕获 IllegalArgumentException 或者 BadTokenException
         }
     }
@@ -75,6 +79,27 @@ public class LoadingDialog extends ProgressDialog {
 
     public void setMessage(@StringRes int message) {
         mLoadingTextView.setText(message);
+    }
+
+    public void addSubscription(Subscription subscription) {
+        if (mCompositeSubscription == null) {
+            mCompositeSubscription = new CompositeSubscription();
+        }
+        mCompositeSubscription.add(subscription);
+    }
+
+    //RxJava取消注册，以避免内存泄露
+    private void unSubscribe() {
+        if (mCompositeSubscription != null && mCompositeSubscription.hasSubscriptions()) {
+            mCompositeSubscription.unsubscribe();
+            mCompositeSubscription = null;
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        unSubscribe();
     }
 
 }

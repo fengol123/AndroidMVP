@@ -99,7 +99,7 @@ public class OldNetSubscriber<T extends OldBaseBean> extends Subscriber<T> {
 
     @Override
     final public void onStart() {
-        mNetCallback.onPrepare();
+        mNetCallback.onPrepare(this);
     }
 
     @Override

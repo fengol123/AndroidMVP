@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 
 import com.fdb.baselibrary.utils.ToastUtil;
 
+import rx.Subscription;
+
 
 public abstract class BaseFragment<P extends IBasePresenter> extends Fragment implements IBaseView {
     private P mPresenter;
@@ -41,10 +43,10 @@ public abstract class BaseFragment<P extends IBasePresenter> extends Fragment im
     }
 
     @Override
-    public void showLoading() {
+    public void showLoading(Subscription subscription) {
         if (getActivity() != null) {
             if (getActivity() instanceof BaseActivity) {
-                ((BaseActivity) getActivity()).showLoading();
+                ((BaseActivity) getActivity()).showLoading(null);
             }
         }
     }
