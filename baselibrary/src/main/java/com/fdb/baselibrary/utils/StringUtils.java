@@ -1,6 +1,9 @@
 package com.fdb.baselibrary.utils;
 
+import android.support.annotation.StringRes;
 import android.text.TextUtils;
+
+import com.fdb.baselibrary.base.BaseApplication;
 
 /**
  * Created by xieguofeng on 2018/12/20
@@ -24,5 +27,10 @@ public class StringUtils {
 
         return false;
     }
+
+    public static String getString(@StringRes int id) {
+        return BaseApplication.getApp().getString(id);
+    }
+
 
 }

@@ -8,7 +8,7 @@ import com.fdb.baselibrary.base.IBaseView;
  */
 public interface LoginPageContract {
     interface View extends IBaseView {
-        void showError(String);
+        void showError(String msg);
 
         void enterHome();
     }

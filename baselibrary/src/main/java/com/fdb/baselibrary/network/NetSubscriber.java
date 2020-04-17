@@ -132,14 +132,9 @@ public abstract class NetSubscriber<T extends BaseBean> extends Subscriber<T> im
         }
     }
 
-    @Override
     public void onTokenError() {
-        if (mNetCallback != null) {
-            mNetCallback.onTokenError();
-        } else {
-            //token的错误的默认UI操作, 如跳转登录页
+        //token的错误的默认UI操作, 如跳转登录页
 
-        }
     }
 
 }

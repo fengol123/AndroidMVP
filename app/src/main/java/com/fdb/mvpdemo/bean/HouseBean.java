@@ -30,4 +30,34 @@ public class HouseBean {
     public int isSoleAgent;
     public int houseId;
     public boolean isSelected;
+
+    @Override
+    public String toString() {
+        return "HouseBean{" +
+                "updateDateStr='" + updateDateStr + '\'' +
+                ", houseType=" + houseType +
+                ", collectionSourceType=" + collectionSourceType +
+                ", isPullOffShelves=" + isPullOffShelves +
+                ", h5Link='" + h5Link + '\'' +
+                ", collectId=" + collectId +
+                ", id=" + id +
+                ", mainPhotoUrl='" + mainPhotoUrl + '\'' +
+                ", communityName='" + communityName + '\'' +
+                ", houseSource=" + houseSource +
+                ", isMls=" + isMls +
+                ", houseLayout='" + houseLayout + '\'' +
+                ", areas='" + areas + '\'' +
+                ", totalPrice='" + totalPrice + '\'' +
+                ", rentPrice='" + rentPrice + '\'' +
+                ", averagePrice='" + averagePrice + '\'' +
+                ", isUseVR=" + isUseVR +
+                ", orientation='" + orientation + '\'' +
+                ", totalFloor=" + totalFloor +
+                ", floor=" + floor +
+                ", createdDate='" + createdDate + '\'' +
+                ", isSoleAgent=" + isSoleAgent +
+                ", houseId=" + houseId +
+                ", isSelected=" + isSelected +
+                '}';
+    }
 }

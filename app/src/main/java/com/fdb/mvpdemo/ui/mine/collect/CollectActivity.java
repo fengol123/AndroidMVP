@@ -1,15 +1,39 @@
 package com.fdb.mvpdemo.ui.mine.collect;
 
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
 
+import com.fdb.baselibrary.base.BaseActivity;
 import com.fdb.mvpdemo.R;
+import com.fdb.mvpdemo.bean.HouseBean;
 
-public class CollectActivity extends AppCompatActivity {
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class CollectActivity extends BaseActivity<CollectContract.Presenter> implements CollectContract.View {
+    @BindView(R.id.tv_content)
+    TextView mTvContent;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_collect);
+    protected CollectContract.Presenter createPresenter() {
+        return new CollectPresenter();
     }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_collect;
+    }
+
+    @Override
+    protected void initialize() {
+        ButterKnife.bind(this);
+        getPresenter().getList(1,10);
+    }
+
+    @Override
+    public void showList(List<HouseBean> list) {
+        mTvContent.setText(list.toString());
+    }
+
 }

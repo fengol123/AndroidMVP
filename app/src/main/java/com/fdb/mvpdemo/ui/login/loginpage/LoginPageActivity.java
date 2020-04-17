@@ -1,19 +1,33 @@
 package com.fdb.mvpdemo.ui.login.loginpage;
 
-import com.fdb.baselibrary.base.BaseActivity;
-import com.fdb.baselibrary.network.NetSubscriber;
-import com.fdb.baselibrary.network.OldNetSubscriber;
-import com.fdb.baselibrary.utils.L;
-import com.fdb.baselibrary.utils.SPUtil;
-import com.fdb.mvpdemo.R;
-import com.fdb.mvpdemo.bean.HouseCollectListBean;
-import com.fdb.mvpdemo.bean.LoginBean;
-import com.fdb.mvpdemo.model.AppModel;
+import android.content.Intent;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import com.fdb.baselibrary.base.BaseActivity;
+import com.fdb.mvpdemo.R;
+import com.fdb.mvpdemo.ui.mine.collect.CollectActivity;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class LoginPageActivity extends BaseActivity<LoginPageContract.Presenter> implements LoginPageContract.View {
+    @BindView(R.id.et_username)
+    EditText mEtUsername;
+    @BindView(R.id.et_psw)
+    EditText mEtPsw;
+    @BindView(R.id.tv_tips)
+    TextView mTvTips;
+    @BindView(R.id.btn_login)
+    Button mBtnLogin;
+
+    @Override
+    protected LoginPageContract.Presenter createPresenter() {
+        return new LoginPagePresenter();
+    }
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_login;
@@ -21,34 +35,34 @@ public class LoginPageActivity extends BaseActivity<LoginPageContract.Presenter>
 
     @Override
     protected void initialize() {
-        AppModel.login()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new OldNetSubscriber<LoginBean>() {
-                    @Override
-                    public void onSuccess(LoginBean data) {
-                        SPUtil.put("token", data.Data.Token);
-                        L.i("" + data.Data.Token);
-                    }
-                });
-
-        AppModel.getCollectList()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new NetSubscriber<HouseCollectListBean>() {
-                    @Override
-                    public void onSuccess(HouseCollectListBean data) {
-                    }
-                });
+        ButterKnife.bind(this);
     }
 
     @Override
-    public void showError() {
-
+    public void showError(String msg) {
+        mTvTips.setText(msg);
     }
 
     @Override
     public void enterHome() {
+        Intent intent = new Intent(getActivity(), CollectActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
+    @OnClick(R.id.btn_login)
+    public void onViewClicked() {
+        String userName = mEtUsername.getText().toString();
+        String psw = mEtPsw.getText().toString();
+        getPresenter().login(userName, psw);
     }
 }
+
+
+
+
+
+
+
+
+

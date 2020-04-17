@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.fdb.baselibrary.utils.ToastUtil;
-import com.fdb.baselibrary.widget.LoadingDialogManager;
+import com.fdb.baselibrary.widget.LoadingDialog;
 
 /**
  * Activity基类 已实现以下功能
@@ -24,6 +24,9 @@ import com.fdb.baselibrary.widget.LoadingDialogManager;
 
 public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatActivity implements IBaseView {
     private P mPresenter;
+    private LoadingDialog mLoadingDialog;
+    private int mLoadingCount;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,12 +48,25 @@ public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatAc
 
     @Override
     public void showLoading() {
-        LoadingDialogManager.showLoading(getActivity());
+        mLoadingCount++;
+        if (mLoadingDialog == null) {
+            mLoadingDialog = new LoadingDialog(this);
+            mLoadingDialog.show();
+        }
     }
 
     @Override
     public void hideLoading() {
-        LoadingDialogManager.dismissLoading();
+        if (mLoadingCount > 0) {
+            mLoadingCount--;
+        }
+
+        if (mLoadingCount == 0) {
+            if (mLoadingDialog != null) {
+                mLoadingDialog.dismiss();
+                mLoadingDialog = null;
+            }
+        }
     }
 
     @Override

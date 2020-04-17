@@ -16,25 +16,23 @@ import rx.Observable;
  * Date   2019/4/25.
  */
 public class AppModel {
-    public static Observable<LoginBean> login() {
+    public static Observable<LoginBean> login(String userName, String psw) {
         ModelParameter modelParameter = new ModelParameter();
-        modelParameter.addParameter("Mobile", "18680193200");
-        modelParameter.addParameter("Password", "12345678");
+        modelParameter.addParameter("Mobile", userName);
+        modelParameter.addParameter("Password", psw);
 
         ModelHeader modelHeader = new ModelHeader();
-        //        modelHeader.addHeader("","");
-
         return RetrofitClient.getAPIService(AppService.class)
                 .login(modelHeader.getHeaders(), modelParameter.getParams());
     }
 
-    public static Observable<HouseCollectListBean> getCollectList() {
+    public static Observable<HouseCollectListBean> getCollectList(int page, int pageSize) {
 //        {"pageIndex":"1","pageSize":"6","CityId":11223}
 
         ModelParameter modelParameter = new ModelParameter();
-//        modelParameter.addParameter("pageIndex", "-1");
-//        modelParameter.addParameter("pageSize", "-1");
-//        modelParameter.addParameter("CityId", "11223");
+        modelParameter.addParameter("pageIndex", page + "");
+        modelParameter.addParameter("pageSize", pageSize + "");
+        modelParameter.addParameter("CityId", "11223");
 
         ModelHeader modelHeader = new ModelHeader();
 

@@ -2,6 +2,7 @@ package com.fdb.mvpdemo.ui.mine.collect;
 
 import com.fdb.baselibrary.base.IBasePresenter;
 import com.fdb.baselibrary.base.IBaseView;
+import com.fdb.mvpdemo.bean.HouseBean;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  */
 public interface CollectContract {
     interface View extends IBaseView {
-        void showList(List<> list);
+        void showList(List<HouseBean> list);
     }
 
     interface Presenter extends IBasePresenter<View> {

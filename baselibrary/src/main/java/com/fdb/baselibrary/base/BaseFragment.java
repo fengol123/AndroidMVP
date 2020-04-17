@@ -42,14 +42,20 @@ public abstract class BaseFragment<P extends IBasePresenter> extends Fragment im
 
     @Override
     public void showLoading() {
-        if (getActivity() instanceof BaseActivity)
-            ((BaseActivity) getActivity()).showLoading();
+        if (getActivity() != null) {
+            if (getActivity() instanceof BaseActivity) {
+                ((BaseActivity) getActivity()).showLoading();
+            }
+        }
     }
 
     @Override
     public void hideLoading() {
-        if (getActivity() instanceof BaseActivity)
-            ((BaseActivity) getActivity()).hideLoading();
+        if (getActivity() != null) {
+            if (getActivity() instanceof BaseActivity) {
+                ((BaseActivity) getActivity()).hideLoading();
+            }
+        }
     }
 
     @Override

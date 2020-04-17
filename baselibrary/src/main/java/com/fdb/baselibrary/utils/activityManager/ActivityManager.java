@@ -13,6 +13,7 @@ public class ActivityManager {
 
     /**
      * 添加一个Activity到栈
+     *
      * @param activity
      */
     public static void addActivity(Activity activity) {
@@ -21,14 +22,22 @@ public class ActivityManager {
 
     /**
      * 从activity栈去除一个activity
+     *
      * @param activity
      */
     public static void removehActivity(Activity activity) {
         mActivityStack.remove(activity);
     }
 
+    public static void finishAllActivity() {
+        for (Activity activity : mActivityStack) {
+            activity.finish();
+        }
+    }
+
     /**
      * 获取activity栈
+     *
      * @return
      */
     public static Stack<Activity> getAllActivity() {
@@ -37,13 +46,22 @@ public class ActivityManager {
 
     /**
      * 获取activity栈顶的activity
+     *
      * @return
      */
     public static Activity getTopActivity() {
-        if (mActivityStack.size() == 0) {
-            return null;
-        } else {
-            return mActivityStack.peek();
+        for (int i = mActivityStack.size() - 1; i >= 0; i--) {
+            Activity activity = mActivityStack.get(i);
+            if (activity.isFinishing()) {
+                continue;
+            }
+
+            return activity;
         }
+        return null;
+    }
+
+    public static boolean isStackEmpty() {
+        return mActivityStack.isEmpty();
     }
 }
