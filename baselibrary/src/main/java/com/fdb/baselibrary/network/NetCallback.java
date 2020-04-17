@@ -20,10 +20,10 @@ public interface NetCallback<T> {
      */
     public void onDataError(@NonNull ApiException error);
 
-//    /**
-//     * token失效
-//     */
-//    public void onTokenError();
+    /**
+     * token失效
+     */
+    public void onTokenError();
 
     /**
      * 后台返回了200状态码，并且数据转换正常

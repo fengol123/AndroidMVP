@@ -3,26 +3,32 @@ package com.fdb.baselibrary.network;
 import android.support.annotation.NonNull;
 
 import com.fdb.baselibrary.R;
-import com.fdb.baselibrary.utils.ToastUtil;
+import com.fdb.baselibrary.base.IBaseView;
+import com.fdb.baselibrary.utils.StringUtils;
 
 /**
  * Desc
  * Author dontlo
  * Date   2020/4/17.
  */
-public class CommonNetCallbackImpl<T> implements NetCallback<T> {
+public class CommonNetCallbackImpl<T> extends BaseNetCallback<T> {
+    private final IBaseView mBaseView;
+
+    public CommonNetCallbackImpl(IBaseView baseView) {
+        mBaseView = baseView;
+    }
 
     @Override
     public void onNetError() {
-        ToastUtil.s(R.string.network_connection_failed);
+        mBaseView.showMessage(StringUtils.getString(R.string.network_connection_failed));
     }
 
     @Override
     public void onDataError(@NonNull ApiException error) {
         if (error.message != null) {
-            ToastUtil.s(error.message);
+            mBaseView.showMessage(error.message);
         } else {
-            ToastUtil.s(R.string.data_error);
+            mBaseView.showMessage(StringUtils.getString(R.string.data_error));
         }
     }
 
@@ -33,11 +39,11 @@ public class CommonNetCallbackImpl<T> implements NetCallback<T> {
 
     @Override
     public void onPrepare() {
-
+        mBaseView.showLoading();
     }
 
     @Override
     public void onFinish() {
-
+        mBaseView.hideLoading();
     }
 }
