@@ -46,7 +46,7 @@ public abstract class BaseFragment<P extends IBasePresenter> extends Fragment im
     public void showLoading(Subscription subscription) {
         if (getActivity() != null) {
             if (getActivity() instanceof BaseActivity) {
-                ((BaseActivity) getActivity()).showLoading(null);
+                ((BaseActivity) getActivity()).showLoading(subscription);
             }
         }
     }

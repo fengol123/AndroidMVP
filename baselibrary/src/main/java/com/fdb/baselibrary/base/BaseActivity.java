@@ -1,14 +1,13 @@
 package com.fdb.baselibrary.base;
 
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.fdb.baselibrary.utils.ToastUtil;
-import com.fdb.baselibrary.widget.LoadingDialog;
+import com.fdb.baselibrary.widget.LoadingDialogManager;
 
 import rx.Subscription;
 
@@ -27,8 +26,7 @@ import rx.Subscription;
 
 public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatActivity implements IBaseView {
     private P mPresenter;
-    private LoadingDialog mLoadingDialog;
-    private int mLoadingCount;
+    private LoadingDialogManager mLoadingDialogManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,31 +48,17 @@ public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatAc
 
     @Override
     public void showLoading(Subscription subscription) {
-        mLoadingCount++;
-        if (mLoadingDialog == null) {
-            mLoadingDialog = new LoadingDialog(this);
-            mLoadingDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                @Override
-                public void onDismiss(DialogInterface dialog) {
-                    mLoadingDialog = null;
-                    mLoadingCount = 0;
-                }
-            });
-            mLoadingDialog.show();
+        if (mLoadingDialogManager == null) {
+            mLoadingDialogManager = new LoadingDialogManager();
         }
-        mLoadingDialog.addSubscription(subscription);
+
+        mLoadingDialogManager.showLoading(this, subscription);
     }
 
     @Override
     public void hideLoading() {
-        if (mLoadingCount > 0) {
-            mLoadingCount--;
-        }
-
-        if (mLoadingCount == 0) {
-            if (mLoadingDialog != null) {
-                mLoadingDialog.dismiss();
-            }
+        if (mLoadingDialogManager != null) {
+            mLoadingDialogManager.hideLoading();
         }
     }
 
