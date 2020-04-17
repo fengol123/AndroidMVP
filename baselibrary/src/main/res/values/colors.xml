@@ -7,4 +7,16 @@
     <color name="text_black">#333333</color>
     <color name="text_gray">#999999</color>
     <color name="blue">#47A8FA</color>
+
+    <color name="env_bg">#FAFAFA</color>
+    <color name="text_gray2">#989898</color>
+    <color name="text_gray3">#777777</color>
+    <color name="text_gray4">#E0E0E0</color>
+    <color name="text_gray5">#EEEEEE</color>
+    <color name="black">#000</color>
+    <color name="black_title">#333333</color>
+    <color name="white">#FFF</color>
+    <color name="red_dark">#D8473C</color>
+    <color name="transparent">#0000</color>
+    <color name="pink">#fffbf6f7</color>
 </resources>
