@@ -1,7 +1,7 @@
 package com.fdb.mvpdemo.ui.mine.collect;
 
 import com.fdb.baselibrary.base.BasePresenter;
-import com.fdb.baselibrary.network.NetSubscriber;
+import com.fdb.baselibrary.network.callback.NetSubscriber;
 import com.fdb.mvpdemo.bean.HouseCollectListBean;
 import com.fdb.mvpdemo.model.AppModel;
 

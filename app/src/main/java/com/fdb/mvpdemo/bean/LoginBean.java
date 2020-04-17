@@ -1,6 +1,6 @@
 package com.fdb.mvpdemo.bean;
 
-import com.fdb.baselibrary.base.OldBaseBean;
+import com.fdb.baselibrary.bean.OldBaseBean;
 
 /**
  * Desc

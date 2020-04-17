@@ -1,8 +1,10 @@
-package com.fdb.baselibrary.network;
+package com.fdb.baselibrary.network.callback;
 
 import com.fdb.baselibrary.BuildConfig;
 import com.fdb.baselibrary.R;
-import com.fdb.baselibrary.base.BaseBean;
+import com.fdb.baselibrary.bean.BaseBean;
+import com.fdb.baselibrary.Constans;
+import com.fdb.baselibrary.bean.DataErrorBean;
 import com.fdb.baselibrary.utils.L;
 import com.fdb.baselibrary.utils.ToastUtil;
 import com.google.gson.JsonParseException;
@@ -42,7 +44,7 @@ public abstract class NetSubscriber<T extends BaseBean> extends Subscriber<T> im
             if (Constans.TOKEN_ERROR.equals(t.errorCode)) {
                 onTokenError();
             } else {
-                onDataError(new ApiException(t.errorCode, t.errorMessage));
+                onDataError(new DataErrorBean(t.errorCode, t.errorMessage));
             }
         }
     }
@@ -100,7 +102,7 @@ public abstract class NetSubscriber<T extends BaseBean> extends Subscriber<T> im
     }
 
     @Override
-    public void onDataError(ApiException error) {
+    public void onDataError(DataErrorBean error) {
         if (mNetCallback != null) {
             mNetCallback.onDataError(error);
         } else {

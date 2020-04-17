@@ -1,6 +1,8 @@
-package com.fdb.baselibrary.network;
+package com.fdb.baselibrary.network.callback;
 
 import android.support.annotation.NonNull;
+
+import com.fdb.baselibrary.bean.DataErrorBean;
 
 import rx.Subscription;
 
@@ -20,7 +22,7 @@ public interface NetCallback<T> {
      * 后台返回错误信息或者错误码
      * json数据转换异常
      */
-    public void onDataError(@NonNull ApiException error);
+    public void onDataError(@NonNull DataErrorBean error);
 
     /**
      * token失效

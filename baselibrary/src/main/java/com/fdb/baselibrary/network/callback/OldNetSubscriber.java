@@ -1,9 +1,11 @@
-package com.fdb.baselibrary.network;
+package com.fdb.baselibrary.network.callback;
 
 import android.support.annotation.NonNull;
 
 import com.fdb.baselibrary.BuildConfig;
-import com.fdb.baselibrary.base.OldBaseBean;
+import com.fdb.baselibrary.bean.OldBaseBean;
+import com.fdb.baselibrary.bean.DataErrorBean;
+import com.fdb.baselibrary.bean.HTTPErrorBean;
 import com.fdb.baselibrary.utils.JsonUtils;
 import com.fdb.baselibrary.utils.L;
 import com.fdb.baselibrary.utils.StringUtils;
@@ -85,7 +87,7 @@ public class OldNetSubscriber<T extends OldBaseBean> extends Subscriber<T> {
                 if (!StringUtils.isEmpty(string)) {
                     HTTPErrorBean httpErrorBean = JsonUtils.jsonToBean(string, HTTPErrorBean.class);
                     if (httpErrorBean != null && !StringUtils.isEmpty(httpErrorBean.message)) {
-                        mNetCallback.onDataError(new ApiException(null, httpErrorBean.message));
+                        mNetCallback.onDataError(new DataErrorBean(null, httpErrorBean.message));
                         return;
                     }
                 }

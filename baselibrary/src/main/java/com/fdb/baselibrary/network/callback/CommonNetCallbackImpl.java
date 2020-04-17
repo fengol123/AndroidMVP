@@ -1,10 +1,12 @@
-package com.fdb.baselibrary.network;
+package com.fdb.baselibrary.network.callback;
 
 import android.support.annotation.NonNull;
 
 import com.fdb.baselibrary.R;
 import com.fdb.baselibrary.base.IBaseView;
+import com.fdb.baselibrary.bean.DataErrorBean;
 import com.fdb.baselibrary.utils.StringUtils;
+import com.fdb.baselibrary.utils.ToastUtil;
 
 import rx.Subscription;
 
@@ -26,11 +28,11 @@ public class CommonNetCallbackImpl<T> extends BaseNetCallback<T> {
     }
 
     @Override
-    public void onDataError(@NonNull ApiException error) {
+    public void onDataError(@NonNull DataErrorBean error) {
         if (error.message != null) {
-            mBaseView.showMessage(error.message);
+            ToastUtil.s(error.message);
         } else {
-            mBaseView.showMessage(StringUtils.getString(R.string.data_error));
+            ToastUtil.s(StringUtils.getString(R.string.data_error));
         }
     }
 

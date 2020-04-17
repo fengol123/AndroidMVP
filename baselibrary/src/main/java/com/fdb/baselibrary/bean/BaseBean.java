@@ -1,4 +1,4 @@
-package com.fdb.baselibrary.base;
+package com.fdb.baselibrary.bean;
 
 /**
  * Desc

@@ -1,6 +1,6 @@
 package com.fdb.mvpdemo.bean;
 
-import com.fdb.baselibrary.base.BaseBean;
+import com.fdb.baselibrary.bean.BaseBean;
 
 import java.util.List;
 

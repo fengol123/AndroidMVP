@@ -1,4 +1,4 @@
-package com.fdb.baselibrary.network;
+package com.fdb.baselibrary.bean;
 
 import com.google.gson.annotations.SerializedName;
 

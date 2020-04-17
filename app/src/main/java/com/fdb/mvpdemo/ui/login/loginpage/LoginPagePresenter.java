@@ -3,9 +3,9 @@ package com.fdb.mvpdemo.ui.login.loginpage;
 import android.support.annotation.NonNull;
 
 import com.fdb.baselibrary.base.BasePresenter;
-import com.fdb.baselibrary.network.ApiException;
-import com.fdb.baselibrary.network.CommonNetCallbackImpl;
-import com.fdb.baselibrary.network.OldNetSubscriber;
+import com.fdb.baselibrary.bean.DataErrorBean;
+import com.fdb.baselibrary.network.callback.CommonNetCallbackImpl;
+import com.fdb.baselibrary.network.callback.OldNetSubscriber;
 import com.fdb.baselibrary.network.transformer.ThreadTransformer;
 import com.fdb.baselibrary.utils.L;
 import com.fdb.mvpdemo.bean.LoginBean;
@@ -45,7 +45,7 @@ public class LoginPagePresenter extends BasePresenter<LoginPageContract.View> im
                     }
 
                     @Override
-                    public void onDataError(@NonNull ApiException error) {
+                    public void onDataError(@NonNull DataErrorBean error) {
                         getView().showError(error.message);
                     }
                 }));

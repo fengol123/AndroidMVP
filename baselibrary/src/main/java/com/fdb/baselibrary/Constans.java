@@ -1,4 +1,4 @@
-package com.fdb.baselibrary.network;
+package com.fdb.baselibrary;
 
 /**
  * Desc
