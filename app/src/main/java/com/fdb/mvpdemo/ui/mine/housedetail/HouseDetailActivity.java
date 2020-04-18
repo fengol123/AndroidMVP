@@ -3,6 +3,7 @@ package com.fdb.mvpdemo.ui.mine.housedetail;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.widget.TextView;
 
@@ -16,10 +17,13 @@ import com.fdb.mvpdemo.widget.statusview.StatusViewBuilder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import rx.Subscription;
 
 public class HouseDetailActivity extends BaseActivity<HouseDetailContract.Presenter> implements HouseDetailContract.View {
     @BindView(R.id.tv_content)
     TextView mTvContent;
+    @BindView(R.id.srl_refresh)
+    SwipeRefreshLayout mSrlRefresh;
     private String mId;
     private StatusView mStatusView;
 
@@ -37,7 +41,7 @@ public class HouseDetailActivity extends BaseActivity<HouseDetailContract.Presen
     protected void initialize() {
         ButterKnife.bind(this);
 
-        mStatusView = StatusView.init(this, R.id.tv_content);
+        mStatusView = StatusView.init(this, R.id.srl_refresh);
         mStatusView.config(new StatusViewBuilder.Builder()
                 .setOnErrorRetryClickListener(new View.OnClickListener() {
                     @Override
@@ -46,13 +50,27 @@ public class HouseDetailActivity extends BaseActivity<HouseDetailContract.Presen
                         loadData();
                     }
                 }).build());
-        mStatusView.showLoadingView();
+
+        mSrlRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadData();
+            }
+        });
 
         getIntentData();
         loadData();
+
+        mTvContent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSrlRefresh.setRefreshing(true);
+                loadData();
+            }
+        });
     }
 
-    private void loadData(){
+    private void loadData() {
         getPresenter().getDetail("961", mNetCallback);
     }
 
@@ -69,20 +87,35 @@ public class HouseDetailActivity extends BaseActivity<HouseDetailContract.Presen
 
     BaseNetCallback<DemandDetail> mNetCallback = new BaseNetCallback<DemandDetail>() {
         @Override
+        public void onPrepare(Subscription subscription) {
+            if (!mSrlRefresh.isRefreshing()) {
+                mStatusView.showLoadingView();
+            }
+        }
+
+        @Override
         public void onNetError() {
+            if (mSrlRefresh.isRefreshing()) {
+                mSrlRefresh.setRefreshing(false);
+            }
             mStatusView.showNetErrorView();
         }
 
         @Override
         public void onDataError(@NonNull DataErrorBean error) {
+            if (mSrlRefresh.isRefreshing()) {
+                mSrlRefresh.setRefreshing(false);
+            }
             mStatusView.showErrorView();
         }
 
         @Override
         public void onSuccess(@NonNull DemandDetail data) {
+            if (mSrlRefresh.isRefreshing()) {
+                mSrlRefresh.setRefreshing(false);
+            }
             mStatusView.showContentView();
             mTvContent.setText(data.Data.toString());
         }
     };
-
 }

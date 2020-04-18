@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     tools:context="com.fdb.mvpdemo.ui.mine.housedetail.HouseDetailActivity">
 
-    <LinearLayout
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/srl_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -18,7 +19,7 @@
             android:text="我是内容布局"
             android:textSize="14sp" />
 
-    </LinearLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 
 </LinearLayout>
