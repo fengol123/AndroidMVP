@@ -37,6 +37,7 @@ public class StatusViewBuilder {
     private View.OnClickListener emptyRetryClickListener;
     // error 重试按钮点击事件
     private View.OnClickListener errorRetryClickListener;
+    private View.OnClickListener netErrorRetryClickListener;
 
     public String getLoadingTip() {
         return loadingTip;
@@ -102,6 +103,10 @@ public class StatusViewBuilder {
         return errorRetryClickListener;
     }
 
+    public View.OnClickListener getNetErrorRetryClickListener() {
+        return netErrorRetryClickListener;
+    }
+
     public StatusViewBuilder(Builder builder) {
         this.loadingTip = builder.loadingTip;
         this.emptyTip = builder.emptyTip;
@@ -119,6 +124,7 @@ public class StatusViewBuilder {
         this.retryDrawable = builder.retryDrawable;
         this.emptyRetryClickListener = builder.emptyRetryClickListener;
         this.errorRetryClickListener = builder.errorRetryClickListener;
+        this.netErrorRetryClickListener = builder.netErrorRetryClickListener;
     }
 
     public static class Builder {
@@ -140,6 +146,7 @@ public class StatusViewBuilder {
         private int retryDrawable;
         private View.OnClickListener emptyRetryClickListener;
         private View.OnClickListener errorRetryClickListener;
+        private View.OnClickListener netErrorRetryClickListener;
 
         public Builder setLoadingTip(String loadingTip) {
             this.loadingTip = loadingTip;
@@ -218,6 +225,7 @@ public class StatusViewBuilder {
 
         public Builder setOnErrorRetryClickListener(View.OnClickListener errorRetryClickListener) {
             this.errorRetryClickListener = errorRetryClickListener;
+            this.netErrorRetryClickListener = errorRetryClickListener;
             return this;
         }
 

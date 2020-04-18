@@ -18,7 +18,7 @@
         android:layout_below="@+id/sv_error_icon"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
-        android:text="数据错误"
+        android:text="网络连接失败"
         android:textColor="#2c2c2c"
         android:textSize="14sp" />
 

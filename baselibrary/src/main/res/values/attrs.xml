@@ -4,5 +4,6 @@
         <attr name="sv_loading_view" format="reference" />
         <attr name="sv_empty_view" format="reference" />
         <attr name="sv_error_view" format="reference" />
+        <attr name="sv_net_error_view" format="reference" />
     </declare-styleable>
 </resources>

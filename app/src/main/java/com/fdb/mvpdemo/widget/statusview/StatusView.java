@@ -37,6 +37,8 @@ public class StatusView extends FrameLayout {
     int emptyLayoutId = R.layout.sv_empty_layout;
     private @LayoutRes
     int errorLayoutId = R.layout.sv_error_layout;
+    private @LayoutRes
+    int netErrorLayoutId = R.layout.sv_net_error_layout;
 
     // 状态布局 View 缓存集合
     private SparseArray<View> viewArray = new SparseArray<>();
@@ -69,6 +71,8 @@ public class StatusView extends FrameLayout {
                 emptyLayoutId = ta.getResourceId(attr, emptyLayoutId);
             } else if (attr == R.styleable.StatusView_sv_error_view) {
                 errorLayoutId = ta.getResourceId(attr, errorLayoutId);
+            } else if (attr == R.styleable.StatusView_sv_net_error_view) {
+                netErrorLayoutId = ta.getResourceId(attr, netErrorLayoutId);
             }
         }
         ta.recycle();
@@ -172,6 +176,10 @@ public class StatusView extends FrameLayout {
         this.errorLayoutId = errorLayoutRes;
     }
 
+    public void setNetErrorLayoutId(int netErrorLayoutId) {
+        this.netErrorLayoutId = netErrorLayoutId;
+    }
+
     /**
      * 显示 原始内容 布局
      */
@@ -200,6 +208,10 @@ public class StatusView extends FrameLayout {
         switchStatusView(errorLayoutId);
     }
 
+    public void showNetErrorView() {
+        switchStatusView(netErrorLayoutId);
+    }
+
     /**
      * 设置 Loading 布局首次显示时的回调，可在回调中更新布局、绑定事件等
      */
@@ -219,6 +231,10 @@ public class StatusView extends FrameLayout {
      */
     public void setOnErrorViewConvertListener(StatusViewConvertListener listener) {
         listenerArray.put(errorLayoutId, listener);
+    }
+
+    public void setOnNetErrorViewConvertListener(StatusViewConvertListener listener) {
+        listenerArray.put(netErrorLayoutId, listener);
     }
 
     /**
@@ -329,6 +345,14 @@ public class StatusView extends FrameLayout {
             setTipColor(R.id.sv_error_tip, viewHolder);
             setTipSize(R.id.sv_error_tip, viewHolder);
             setIcon(R.id.sv_error_icon, builder.getErrorIcon(), viewHolder);
+
+            setRetry(R.id.sv_error_retry, builder.isShowErrorRetry(), builder.getErrorRetryText(),
+                    builder.getErrorRetryClickListener(), viewHolder);
+        } else if (layoutId == R.layout.sv_net_error_layout) {
+//            setTip(R.id.sv_error_tip, builder.getErrorTip(), viewHolder);
+//            setTipColor(R.id.sv_error_tip, viewHolder);
+//            setTipSize(R.id.sv_error_tip, viewHolder);
+//            setIcon(R.id.sv_error_icon, builder.getErrorIcon(), viewHolder);
 
             setRetry(R.id.sv_error_retry, builder.isShowErrorRetry(), builder.getErrorRetryText(),
                     builder.getErrorRetryClickListener(), viewHolder);
