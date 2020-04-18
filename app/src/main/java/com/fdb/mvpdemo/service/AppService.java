@@ -1,6 +1,7 @@
 package com.fdb.mvpdemo.service;
 
 
+import com.fdb.mvpdemo.bean.DemandDetail;
 import com.fdb.mvpdemo.bean.HouseCollectListBean;
 import com.fdb.mvpdemo.bean.LoginBean;
 import com.fdb.mvpdemo.constant.HostUrl;
@@ -18,6 +19,9 @@ public interface AppService {
 
     @POST(HostUrl.COLLECT_LIST)
     Observable<HouseCollectListBean> houseCollectList(@HeaderMap HashMap<String, String> header, @Body HashMap Body);
+
+    @POST(HostUrl.DEMAND_DETAIL)
+    Observable<DemandDetail> demandDetail(@HeaderMap HashMap<String, String> header, @Body HashMap Body);
 }
 
 

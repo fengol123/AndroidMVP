@@ -17,7 +17,7 @@ public class ModelParameter {
      * 加入请求网络的公共数据
      */
     private void addCommonParams() {
-
+        addParameter("CityId", "11223");
     }
 
     /**

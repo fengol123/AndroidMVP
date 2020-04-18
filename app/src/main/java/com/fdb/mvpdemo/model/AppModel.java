@@ -4,6 +4,7 @@ package com.fdb.mvpdemo.model;
 import com.fdb.baselibrary.network.RetrofitClient;
 import com.fdb.mvpdemo.base.ModelHeader;
 import com.fdb.mvpdemo.base.ModelParameter;
+import com.fdb.mvpdemo.bean.DemandDetail;
 import com.fdb.mvpdemo.bean.HouseCollectListBean;
 import com.fdb.mvpdemo.bean.LoginBean;
 import com.fdb.mvpdemo.service.AppService;
@@ -27,17 +28,26 @@ public class AppModel {
     }
 
     public static Observable<HouseCollectListBean> getCollectList(int page, int pageSize) {
-//        {"pageIndex":"1","pageSize":"6","CityId":11223}
+        //        {"pageIndex":"1","pageSize":"6","CityId":11223}
 
         ModelParameter modelParameter = new ModelParameter();
         modelParameter.addParameter("pageIndex", page + "");
         modelParameter.addParameter("pageSize", pageSize + "");
-        modelParameter.addParameter("CityId", "11223");
 
         ModelHeader modelHeader = new ModelHeader();
 
         return RetrofitClient.getAPIService(AppService.class)
                 .houseCollectList(modelHeader.getHeaders(), modelParameter.getParams());
+    }
+
+    public static Observable<DemandDetail> demandDetail(String id) {
+        ModelParameter modelParameter = new ModelParameter();
+        modelParameter.addParameter("Id", id);
+
+        ModelHeader modelHeader = new ModelHeader();
+
+        return RetrofitClient.getAPIService(AppService.class)
+                .demandDetail(modelHeader.getHeaders(), modelParameter.getParams());
     }
 
 }

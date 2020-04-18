@@ -1,5 +1,6 @@
 package com.fdb.mvpdemo.ui.mine.collect;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.FrameLayout;
@@ -8,6 +9,7 @@ import com.fdb.baselibrary.base.BaseActivity;
 import com.fdb.baselibrary.base.BaseApplication;
 import com.fdb.mvpdemo.R;
 import com.fdb.mvpdemo.bean.HouseBean;
+import com.fdb.mvpdemo.ui.mine.housedetail.HouseDetailActivity;
 import com.fdb.mvpdemo.widget.base.BaseAdapter;
 import com.fdb.mvpdemo.widget.base.BaseHolder;
 import com.fdb.mvpdemo.widget.holder.HouseCollectHolder;
@@ -43,6 +45,13 @@ public class CollectActivity extends BaseActivity<CollectContract.Presenter> imp
                 return new HouseCollectHolder(frameLayout);
             }
         };
+        mBaseAdapter.setOnItemClickListener(new BaseHolder.OnItemClickListener<HouseBean>() {
+            @Override
+            public void onItemClick(HouseBean data, int position) {
+                Intent intent = HouseDetailActivity.getIntent(getActivity(), data.id + "");
+                startActivity(intent);
+            }
+        });
         mRvContent.setAdapter(mBaseAdapter);
 
         getPresenter().getList(1, 10);

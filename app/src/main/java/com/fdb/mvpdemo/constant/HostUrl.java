@@ -12,7 +12,7 @@ public interface HostUrl {
     /*** 登录模块 */
     String ACCOUNT_LOGIN = "API/Account/LOGIN"; //登录接口
 
-
     String COLLECT_LIST = "http://39.108.171.230:9002/User/CollectionHouseSearch"; //收藏列表
+    String DEMAND_DETAIL = "api/NewCustomerDemands/GetModel";  //需求详情
 
 }
