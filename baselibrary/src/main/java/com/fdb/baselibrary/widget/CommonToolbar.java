@@ -32,6 +32,7 @@ public class CommonToolbar extends Toolbar {
     private ImageView img_toolbar_menu_right;
     private TextView tv_toolbar_menu_right;
     private boolean showSplitLine = true;//是否显示分割线
+    private ImageView img_toolbar_back_button_secord;
 
     public CommonToolbar(Context context) {
         this(context, null);
@@ -54,6 +55,7 @@ public class CommonToolbar extends Toolbar {
         layout_toolbar = (RelativeLayout) rootView.findViewById(R.id.layout_toolbar);
         tv_toolbar_title = (AppCompatTextView) rootView.findViewById(R.id.tv_toolbar_title);
         img_toolbar_back_button = (ImageView) rootView.findViewById(R.id.img_toolbar_back_button);
+        img_toolbar_back_button_secord = rootView.findViewById(R.id.img_toolbar_back_button_secord);
         img_toolbar_menu_right = (ImageView) rootView.findViewById(R.id.img_toolbar_menu_right);
         tv_toolbar_menu_left = (TextView) rootView.findViewById(R.id.tv_toolbar_menu_left);
         tv_toolbar_menu_right = (TextView) rootView.findViewById(R.id.tv_toolbar_menu_right);
@@ -109,6 +111,12 @@ public class CommonToolbar extends Toolbar {
         img_toolbar_back_button.setVisibility(View.VISIBLE);
         img_toolbar_back_button.setImageResource(resId);
         img_toolbar_back_button.setOnClickListener(listener);
+    }
+
+    public void showImageLeftSecond(@DrawableRes int resId, OnClickListener listener) {
+        img_toolbar_back_button_secord.setVisibility(View.VISIBLE);
+        img_toolbar_back_button_secord.setImageResource(resId);
+        img_toolbar_back_button_secord.setOnClickListener(listener);
     }
 
     /**
@@ -332,29 +340,38 @@ public class CommonToolbar extends Toolbar {
             CommonToolbar toolbar = new CommonToolbar(activity);
 
             /*** setBackgroundColor */
-            if (backgroundColorResId > 0) toolbar.setBackgroundColor(backgroundColorResId);
+            if (backgroundColorResId > 0)
+                toolbar.setBackgroundColor(backgroundColorResId);
 
             /*** default backbuttton 这里默认设置一个返回按钮图标 */
             toolbar.setBackButton(backResId);
 
             /*** leftMenu */
             if (TextUtils.isEmpty(leftStr)) {
-                if (leftStrResId > 0) toolbar.showTextLeft(leftStrResId, leftOnClickListener);
-            } else toolbar.showTextLeft(leftStr, leftOnClickListener);
-            if (leftImgResId > 0) toolbar.showImageRight(leftImgResId, leftOnClickListener);
+                if (leftStrResId > 0)
+                    toolbar.showTextLeft(leftStrResId, leftOnClickListener);
+            } else
+                toolbar.showTextLeft(leftStr, leftOnClickListener);
+            if (leftImgResId > 0)
+                toolbar.showImageRight(leftImgResId, leftOnClickListener);
 
             /*** rightMenu */
             if (TextUtils.isEmpty(rightStr)) {
                 if (rightStrResId > 0)
                     toolbar.showTextRight(rightStrResId, rightOnClickListener);
-            } else toolbar.showTextRight(rightStr, rightOnClickListener);
-            if (rightImgResId > 0) toolbar.showImageRight(rightImgResId, rightOnClickListener);
+            } else
+                toolbar.showTextRight(rightStr, rightOnClickListener);
+            if (rightImgResId > 0)
+                toolbar.showImageRight(rightImgResId, rightOnClickListener);
 
             /*** title */
             if (TextUtils.isEmpty(title)) {
-                if (titleResId > 0) toolbar.setTitle(titleResId);
-                else toolbar.setTitle(null);
-            } else toolbar.setTitle(title);
+                if (titleResId > 0)
+                    toolbar.setTitle(titleResId);
+                else
+                    toolbar.setTitle(null);
+            } else
+                toolbar.setTitle(title);
 
             System.out.println("CommonToolbar.Builder.build");
             return toolbar;
