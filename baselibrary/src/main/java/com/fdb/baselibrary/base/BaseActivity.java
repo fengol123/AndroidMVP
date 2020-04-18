@@ -33,7 +33,9 @@ public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatAc
         super.onCreate(savedInstanceState);
 
         initPresenter();
-        setContentView(getLayoutId());
+        if (getLayoutId() != 0) {
+            setContentView(getLayoutId());
+        }
         initialize();
     }
 
@@ -92,7 +94,9 @@ public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatAc
     }
 
     @LayoutRes
-    protected abstract int getLayoutId();
+    protected int getLayoutId() {
+        return 0;
+    }
 
     /**
      * 在onCreate方法里调用,用于自定义的初始化操作
