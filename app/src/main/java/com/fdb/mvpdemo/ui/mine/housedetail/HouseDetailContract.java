@@ -8,7 +8,7 @@ import com.fdb.baselibrary.base.IBaseView;
  */
 public interface HouseDetailContract {
     interface View extends IBaseView {
-
+        void showContent(String content);
     }
 
     interface Presenter extends IBasePresenter<View> {

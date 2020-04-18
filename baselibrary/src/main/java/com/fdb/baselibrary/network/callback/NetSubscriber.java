@@ -65,7 +65,7 @@ public class NetSubscriber<T extends BaseBean> extends Subscriber<T> {
             //json解析错误
             mNetCallback.onNetError();
         } else {
-            mNetCallback.onNetError();
+            mNetCallback.onDataError(new DataErrorBean(null, e.getMessage()));
         }
     }
 

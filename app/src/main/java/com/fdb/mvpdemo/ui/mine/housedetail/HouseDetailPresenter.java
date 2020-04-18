@@ -3,7 +3,6 @@ package com.fdb.mvpdemo.ui.mine.housedetail;
 import android.support.annotation.NonNull;
 
 import com.fdb.baselibrary.base.BasePresenter;
-import com.fdb.baselibrary.bean.DataErrorBean;
 import com.fdb.baselibrary.network.callback.CommonNetCallbackImpl;
 import com.fdb.baselibrary.network.callback.OldNetSubscriber;
 import com.fdb.baselibrary.network.transformer.ThreadTransformer;
@@ -28,12 +27,7 @@ public class HouseDetailPresenter extends BasePresenter<HouseDetailContract.View
                     @Override
                     public void onSuccess(@NonNull DemandDetail data) {
                         L.i("onSuccess");
-
-                    }
-
-                    @Override
-                    public void onDataError(@NonNull DataErrorBean error) {
-
+                        getView().showContent(data.Data.toString());
                     }
                 }));
         addSubscription(subscription);

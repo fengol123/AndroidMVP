@@ -26,6 +26,15 @@ public class DemandDetail extends OldBaseBean<DemandDetail.DataBean> {
         public List<CustomerDemandFloorTypesBean> CustomerDemandFloorTypes;
         public List<CustomerDemandCardinalDirectionsBean> CustomerDemandCardinalDirections;
         public List<CustomerDemandHouseFeaturesBean> CustomerDemandHouseFeatures;
+
+        @Override
+        public String toString() {
+            return "DataBean{" +
+                    "IsPullOffShelves=" + IsPullOffShelves +
+                    ", Score=" + Score +
+                    ", ShareUserInfo=" + ShareUserInfo +
+                    ", CustomerDemandMain=" + CustomerDemandMain +"]   ";
+        }
     }
 
     public static class ShareUserInfoBean {
