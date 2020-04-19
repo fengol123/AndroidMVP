@@ -6,7 +6,6 @@ import com.fdb.baselibrary.R;
 import com.fdb.baselibrary.base.IBaseView;
 import com.fdb.baselibrary.bean.DataErrorBean;
 import com.fdb.baselibrary.utils.StringUtils;
-import com.fdb.baselibrary.utils.ToastUtil;
 
 import rx.Subscription;
 
@@ -15,10 +14,10 @@ import rx.Subscription;
  * Author dontlo
  * Date   2020/4/17.
  */
-public class CommonNetCallbackImpl<T> extends BaseNetCallback<T> {
+public class ViewNetCallback<T> extends BaseNetCallback<T> {
     private final IBaseView mBaseView;
 
-    public CommonNetCallbackImpl(IBaseView baseView) {
+    public ViewNetCallback(IBaseView baseView) {
         mBaseView = baseView;
     }
 
@@ -30,9 +29,9 @@ public class CommonNetCallbackImpl<T> extends BaseNetCallback<T> {
     @Override
     public void onDataError(@NonNull DataErrorBean error) {
         if (error.message != null) {
-            ToastUtil.s(error.message);
+            mBaseView.showMessage(error.message);
         } else {
-            ToastUtil.s(StringUtils.getString(R.string.data_error));
+            mBaseView.showMessage(StringUtils.getString(R.string.data_error));
         }
     }
 

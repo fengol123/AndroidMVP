@@ -4,8 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.fdb.baselibrary.base.BasePresenter;
 import com.fdb.baselibrary.bean.DataErrorBean;
-import com.fdb.baselibrary.network.callback.CommonNetCallbackImpl;
 import com.fdb.baselibrary.network.callback.OldNetSubscriber;
+import com.fdb.baselibrary.network.callback.ViewNetCallback;
 import com.fdb.baselibrary.network.transformer.ThreadTransformer;
 import com.fdb.baselibrary.utils.L;
 import com.fdb.mvpdemo.bean.LoginBean;
@@ -22,9 +22,11 @@ public class LoginPagePresenter extends BasePresenter<LoginPageContract.View> im
 
     @Override
     public void login(String userName, String psw) {
+
+        //后台旧接口使用 OldNetSubscriber, 新接口使用 NetSubscriber
         Subscription subscription = AppModel.login(userName, psw)
                 .compose(new ThreadTransformer<LoginBean>())
-                .subscribe(new OldNetSubscriber<LoginBean>(new CommonNetCallbackImpl<LoginBean>(getView()) {
+                .subscribe(new OldNetSubscriber<LoginBean>(new ViewNetCallback<LoginBean>(getView()) {
                     @Override
                     public void onSuccess(@NonNull LoginBean data) {
                         L.i("onSuccess");
@@ -37,6 +39,30 @@ public class LoginPagePresenter extends BasePresenter<LoginPageContract.View> im
                     }
                 }));
         addSubscription(subscription);
+
+
+
+        //如果不提供view的情况,可以使用如下回调方式, 使用 EasyNetCallback
+        //        Subscription subscription = AppModel.login(userName, psw)
+        //                .compose(new ThreadTransformer<LoginBean>())
+        //                .subscribe(new OldNetSubscriber<LoginBean>(new EasyNetCallback<LoginBean>() {
+        //                    @Override
+        //                    public void onSuccess(@NonNull LoginBean data) {
+        //                        L.i("onSuccess");
+        //                        getView().enterHome();
+        //                    }
+        //
+        //                    @Override
+        //                    public void onPrepare(Subscription subscription) {
+        //                        //显示loading
+        //                    }
+        //
+        //                    @Override
+        //                    public void onFinish() {
+        //                        //隐藏loading
+        //                    }
+        //                }));
+        //        addSubscription(subscription);
     }
 
     //    @Override
