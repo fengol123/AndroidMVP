@@ -2,27 +2,23 @@ package com.fdb.mvpdemo.ui.mine.collect;
 
 import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.widget.FrameLayout;
 
 import com.fdb.baselibrary.base.BaseActivity;
-import com.fdb.baselibrary.base.BaseApplication;
-import com.fdb.mvpdemo.R;
+import com.fdb.baselibrary.network.callback.BaseNetCallback;
 import com.fdb.mvpdemo.bean.HouseBean;
+import com.fdb.mvpdemo.bean.HouseCollectListBean;
 import com.fdb.mvpdemo.ui.mine.housedetail.HouseDetailActivity;
+import com.fdb.mvpdemo.widget.CommonList;
 import com.fdb.mvpdemo.widget.base.BaseAdapter;
 import com.fdb.mvpdemo.widget.base.BaseHolder;
 import com.fdb.mvpdemo.widget.holder.HouseCollectHolder;
 
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
-public class CollectActivity extends BaseActivity<CollectContract.Presenter> implements CollectContract.View {
-    @BindView(R.id.rv_content)
-    RecyclerView mRvContent;
+public class CollectActivity extends BaseActivity<CollectContract.Presenter> implements CollectContract.View, CommonList.OnListListener<HouseCollectListBean, HouseBean> {
     private BaseAdapter<HouseBean> mBaseAdapter;
+    private CommonList<HouseCollectListBean, HouseBean> mCommonList;
 
     @Override
     protected CollectContract.Presenter createPresenter() {
@@ -30,15 +26,11 @@ public class CollectActivity extends BaseActivity<CollectContract.Presenter> imp
     }
 
     @Override
-    protected int getLayoutId() {
-        return R.layout.activity_collect;
-    }
-
-    @Override
     protected void initialize() {
-        ButterKnife.bind(this);
+        mCommonList = new CommonList<>(getActivity());
+        mCommonList.setOnListListener(this);
+        setContentView(mCommonList);
 
-        mRvContent.setLayoutManager(new LinearLayoutManager(BaseApplication.getApp()));
         mBaseAdapter = new BaseAdapter<HouseBean>() {
             @Override
             public BaseHolder<HouseBean> getHolder(FrameLayout frameLayout, int viewType) {
@@ -52,14 +44,22 @@ public class CollectActivity extends BaseActivity<CollectContract.Presenter> imp
                 startActivity(intent);
             }
         });
-        mRvContent.setAdapter(mBaseAdapter);
 
-        getPresenter().getList(1, 10);
+        mCommonList.setAdapter(mBaseAdapter, new LinearLayoutManager(getActivity()),10);
     }
 
     @Override
-    public void showList(List<HouseBean> list) {
-        mBaseAdapter.setData(list);
+    public void loadData(int page, int pageSize, BaseNetCallback<HouseCollectListBean> netCallback) {
+        getPresenter().getList(page, pageSize, netCallback);
     }
 
+    @Override
+    public int getTotalPage(HouseCollectListBean data) {
+        return data.pageCount;
+    }
+
+    @Override
+    public List<HouseBean> getList(HouseCollectListBean data) {
+        return data.data;
+    }
 }

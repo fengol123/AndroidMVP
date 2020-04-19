@@ -1,9 +1,7 @@
 package com.fdb.mvpdemo.ui.mine.collect;
 
-import android.support.annotation.NonNull;
-
 import com.fdb.baselibrary.base.BasePresenter;
-import com.fdb.baselibrary.network.callback.CommonNetCallbackImpl;
+import com.fdb.baselibrary.network.callback.BaseNetCallback;
 import com.fdb.baselibrary.network.callback.NetSubscriber;
 import com.fdb.baselibrary.network.transformer.ThreadTransformer;
 import com.fdb.mvpdemo.bean.HouseCollectListBean;
@@ -19,16 +17,10 @@ import rx.Subscription;
 public class CollectPresenter extends BasePresenter<CollectContract.View> implements CollectContract.Presenter {
 
     @Override
-    public void getList(int page, int pageSize) {
+    public void getList(int page, int pageSize, BaseNetCallback<HouseCollectListBean> netCallback) {
         Subscription subscription = AppModel.getCollectList(page, pageSize)
                 .compose(new ThreadTransformer<HouseCollectListBean>())
-                .subscribe(new NetSubscriber<>(new CommonNetCallbackImpl<HouseCollectListBean>(getView()){
-                    @Override
-                    public void onSuccess(@NonNull HouseCollectListBean data) {
-                        getView().showList(data.data);
-                    }
-                }));
+                .subscribe(new NetSubscriber<>(netCallback));
         addSubscription(subscription);
-
     }
 }

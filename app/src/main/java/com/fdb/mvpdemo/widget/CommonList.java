@@ -9,13 +9,16 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.fdb.baselibrary.base.BaseApplication;
 import com.fdb.baselibrary.bean.DataErrorBean;
 import com.fdb.baselibrary.network.callback.BaseNetCallback;
 import com.fdb.mvpdemo.R;
-import com.fdb.mvpdemo.bean.DemandDetail;
 import com.fdb.mvpdemo.widget.base.BaseAdapter;
 import com.fdb.mvpdemo.widget.base.MoreHolder;
 import com.fdb.mvpdemo.widget.statusview.StatusView;
+import com.fdb.mvpdemo.widget.statusview.StatusViewBuilder;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,15 +29,15 @@ import rx.Subscription;
  * Author dontlo
  * Date   2020/4/17.
  */
-public class CommonList extends FrameLayout {
+public class CommonList<T, L> extends FrameLayout {
     @BindView(R.id.rv_content)
     RecyclerView mRvContent;
     @BindView(R.id.srl_refresh)
     SwipeRefreshLayout mSrlRefresh;
     @BindView(R.id.status_view)
     StatusView mStatusView;
-    private Context mContext;
-    private BaseAdapter mBaseAdapter;
+    private Context mContext = BaseApplication.getApp();
+    private BaseAdapter<L> mBaseAdapter;
     private int mTotalPage;
     private int mPageSize = 10;
     private int mPage = 1;
@@ -47,22 +50,12 @@ public class CommonList extends FrameLayout {
         super(context, attrs);
     }
 
-    private void init() {
-        View view = View.inflate(mContext, R.layout.view_common_list, null);
-        ButterKnife.bind(this, view);
+    public void setAdapter(BaseAdapter<L> baseAdapter, RecyclerView.LayoutManager layoutManager, int pageSize) {
+        if (mOnListListener == null) {
+            return;
+        }
 
-        mSrlRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                mPage = 1;
-                if (mOnListListener != null) {
-                    mOnListListener.loadData(mPage, mPageSize);
-                }
-            }
-        });
-    }
-
-    public void setAdapter(BaseAdapter baseAdapter, RecyclerView.LayoutManager layoutManager) {
+        init();
         mBaseAdapter = baseAdapter;
         mBaseAdapter.setPageSize(mPageSize);
         mRvContent.setLayoutManager(layoutManager);
@@ -71,42 +64,75 @@ public class CommonList extends FrameLayout {
         mBaseAdapter.setOnLoadMoreListener(new MoreHolder.OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
-                mPage++;
-                if (mOnListListener != null) {
-                    mOnListListener.loadData(mPage, mPageSize);
-                }
+                loadMoreData();
+            }
+        });
+        mPageSize = pageSize;
+        mBaseAdapter.setPageSize(pageSize);
+
+        loadData();
+    }
+
+    private void init() {
+        View view = View.inflate(mContext, R.layout.view_common_list, this);
+        ButterKnife.bind(this, view);
+
+        //状态页配置
+        mStatusView.config(new StatusViewBuilder.Builder()
+                .setOnErrorRetryClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mStatusView.showLoadingView();
+                        loadData();
+                    }
+                }).build());
+
+        mSrlRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadData();
             }
         });
     }
 
-    public void setPageSize(int pageSize) {
-        mPageSize = pageSize;
-        if (mBaseAdapter != null) {
-            mBaseAdapter.setPageSize(mPageSize);
+    private void loadData() {
+        mPage = 1;
+        if (mOnListListener != null) {
+            mOnListListener.loadData(mPage, mPageSize, mNetCallback);
         }
     }
 
-    public void setTotalPage(int page) {
-        mTotalPage = page;
+    private void loadMoreData() {
+        mPage++;
+        if (mOnListListener != null) {
+            mOnListListener.loadData(mPage, mPageSize, mNetCallback);
+        }
     }
 
     /**
      * 网络监听者
      */
-    BaseNetCallback<DemandDetail> mNetCallback = new BaseNetCallback<DemandDetail>() {
+    BaseNetCallback<T> mNetCallback = new BaseNetCallback<T>() {
         @Override
         public void onPrepare(Subscription subscription) {
-            if (!mSrlRefresh.isRefreshing()) {
-                mStatusView.showLoadingView();
+            if (mPage == 1) {
+                if (!mSrlRefresh.isRefreshing()) {
+                    mStatusView.showLoadingView();
+                }
             }
         }
 
         @Override
         public void onNetError() {
-            if (mSrlRefresh.isRefreshing()) {
-                mSrlRefresh.setRefreshing(false);
+            if (mPage == 1) {
+                if (mSrlRefresh.isRefreshing()) {
+                    mSrlRefresh.setRefreshing(false);
+                }
+                mStatusView.showNetErrorView();
+            } else {
+                mBaseAdapter.loadMoreError();
+                mPage--;
             }
-            mStatusView.showNetErrorView();
         }
 
         @Override
@@ -123,25 +149,36 @@ public class CommonList extends FrameLayout {
         }
 
         @Override
-        public void onSuccess(@NonNull DemandDetail data) {
-            //            if (mSrlRefresh.isRefreshing()) {
-            //                mSrlRefresh.setRefreshing(false);
-            //            }
-            //            mStatusView.showContentView();
-            //            if (mOnConetntListener != null) {
-            //                mOnConetntListener.showContent(data);
-            //            }
+        public void onSuccess(@NonNull T data) {
+            if (mOnListListener == null) {
+                return;
+            }
+            mTotalPage = mOnListListener.getTotalPage(data);
+            if (mPage == 1) {
+                if (mSrlRefresh.isRefreshing()) {
+                    mSrlRefresh.setRefreshing(false);
+                }
+                mStatusView.showContentView();
+                mBaseAdapter.setData(mOnListListener.getList(data));
+            } else {
+                mBaseAdapter.addData(mOnListListener.getList(data));
+            }
+
         }
     };
 
-    private OnListListener mOnListListener;
+    private OnListListener<T, L> mOnListListener;
 
-    public void setOnListListener(OnListListener onListListener) {
+    public void setOnListListener(OnListListener<T, L> onListListener) {
         mOnListListener = onListListener;
     }
 
-    public interface OnListListener {
-        public void loadData(int page, int pageSize);
+    public interface OnListListener<T, L> {
+        public void loadData(int page, int pageSize, BaseNetCallback<T> netCallback);
+
+        public int getTotalPage(T data);
+
+        public List<L> getList(T data);
     }
 }
 
