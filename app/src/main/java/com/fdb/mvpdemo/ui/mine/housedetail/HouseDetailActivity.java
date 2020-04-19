@@ -16,12 +16,12 @@ import com.fdb.mvpdemo.widget.statusview.StatusView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class HouseDetailActivity extends BaseActivity<HouseDetailContract.Presenter> implements HouseDetailContract.View, ContentLayout.OnConetntListener {
+public class HouseDetailActivity extends BaseActivity<HouseDetailContract.Presenter> implements HouseDetailContract.View, ContentLayout.OnConetntListener<DemandDetail> {
     @BindView(R.id.tv_content)
     TextView mTvContent;
     private String mId;
     private StatusView mStatusView;
-    private ContentLayout mContentLayout;
+    private ContentLayout<DemandDetail> mContentLayout;
 
     @Override
     protected HouseDetailContract.Presenter createPresenter() {
@@ -30,7 +30,7 @@ public class HouseDetailActivity extends BaseActivity<HouseDetailContract.Presen
 
     @Override
     protected void initialize() {
-        mContentLayout = new ContentLayout(getActivity());
+        mContentLayout = new ContentLayout<>(getActivity());
         mContentLayout.setOnConetntListener(this);
         setContentView(mContentLayout);
 

@@ -12,7 +12,6 @@ import com.fdb.baselibrary.base.BaseApplication;
 import com.fdb.baselibrary.bean.DataErrorBean;
 import com.fdb.baselibrary.network.callback.BaseNetCallback;
 import com.fdb.mvpdemo.R;
-import com.fdb.mvpdemo.bean.DemandDetail;
 import com.fdb.mvpdemo.widget.statusview.StatusView;
 import com.fdb.mvpdemo.widget.statusview.StatusViewBuilder;
 
@@ -25,7 +24,7 @@ import rx.Subscription;
  * Author dontlo
  * Date   2020/4/18.
  */
-public class ContentLayout extends FrameLayout {
+public class ContentLayout<T> extends FrameLayout {
     @BindView(R.id.srl_refresh)
     SwipeRefreshLayout mSrlRefresh;
     @BindView(R.id.status_view)
@@ -79,7 +78,7 @@ public class ContentLayout extends FrameLayout {
     /**
      * 网络监听者
      */
-    BaseNetCallback<DemandDetail> mNetCallback = new BaseNetCallback<DemandDetail>() {
+    BaseNetCallback<T> mNetCallback = new BaseNetCallback<T>() {
         @Override
         public void onPrepare(Subscription subscription) {
             if (!mSrlRefresh.isRefreshing()) {
@@ -104,7 +103,7 @@ public class ContentLayout extends FrameLayout {
         }
 
         @Override
-        public void onSuccess(@NonNull DemandDetail data) {
+        public void onSuccess(@NonNull T data) {
             if (mSrlRefresh.isRefreshing()) {
                 mSrlRefresh.setRefreshing(false);
             }
@@ -125,29 +124,20 @@ public class ContentLayout extends FrameLayout {
         }
     }
 
-    /**
-     * 获取网络监听者
-     *
-     * @return
-     */
-    public BaseNetCallback<DemandDetail> getNetCallback() {
-        return mNetCallback;
-    }
+    private OnConetntListener<T> mOnConetntListener;
 
-    private OnConetntListener mOnConetntListener;
-
-    public void setOnConetntListener(OnConetntListener listener) {
+    public void setOnConetntListener(OnConetntListener<T> listener) {
         mOnConetntListener = listener;
         init();
     }
 
-    public interface OnConetntListener {
+    public interface OnConetntListener<T> {
         /**
          * 加载数据
          *
          * @param netCallback
          */
-        public abstract void loadData(BaseNetCallback<DemandDetail> netCallback);
+        public abstract void loadData(BaseNetCallback<T> netCallback);
 
         /**
          * 加载内容布局
@@ -161,7 +151,7 @@ public class ContentLayout extends FrameLayout {
          *
          * @param bean
          */
-        public abstract void showContent(DemandDetail bean);
+        public abstract void showContent(T bean);
     }
 
 }
