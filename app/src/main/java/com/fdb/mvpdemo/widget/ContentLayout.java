@@ -67,7 +67,7 @@ public class ContentLayout<T> extends FrameLayout {
 
         //添加内容布局
         if (mOnConetntListener != null) {
-            mSrlRefresh.addView(mOnConetntListener.getConetntView());
+            mSrlRefresh.addView(mOnConetntListener.getContentView());
         }
 
         if (mOnConetntListener != null) {
@@ -144,7 +144,7 @@ public class ContentLayout<T> extends FrameLayout {
          *
          * @return
          */
-        public abstract View getConetntView();
+        public abstract View getContentView();
 
         /**
          * 显示数据

@@ -54,7 +54,7 @@ public class HouseDetailActivity extends BaseActivity<HouseDetailContract.Presen
     }
 
     @Override
-    public View getConetntView() {
+    public View getContentView() {
         View view = ViewUtils.inflate(getActivity(), R.layout.activity_house_detail);
         ButterKnife.bind(this, view);
         return view;
