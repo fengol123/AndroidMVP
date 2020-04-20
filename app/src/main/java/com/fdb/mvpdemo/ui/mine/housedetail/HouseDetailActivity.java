@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.fdb.baselibrary.base.BaseActivity;
-import com.fdb.baselibrary.network.callback.BaseNetCallback;
+import com.fdb.baselibrary.network.callback.NetCallback;
 import com.fdb.baselibrary.utils.ViewUtils;
 import com.fdb.mvpdemo.R;
 import com.fdb.mvpdemo.bean.DemandDetail;
@@ -49,7 +49,7 @@ public class HouseDetailActivity extends BaseActivity<HouseDetailContract.Presen
     }
 
     @Override
-    public void loadData(BaseNetCallback<DemandDetail> netCallback) {
+    public void loadData(NetCallback<DemandDetail> netCallback) {
         getPresenter().getDetail("961", netCallback);
     }
 

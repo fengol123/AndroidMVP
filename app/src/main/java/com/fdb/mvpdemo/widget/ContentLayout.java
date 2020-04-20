@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 import com.fdb.baselibrary.base.BaseApplication;
 import com.fdb.baselibrary.bean.DataErrorBean;
 import com.fdb.baselibrary.network.callback.BaseNetCallback;
+import com.fdb.baselibrary.network.callback.NetCallback;
 import com.fdb.mvpdemo.R;
 import com.fdb.mvpdemo.widget.statusview.StatusView;
 import com.fdb.mvpdemo.widget.statusview.StatusViewBuilder;
@@ -78,7 +79,7 @@ public class ContentLayout<T> extends FrameLayout {
     /**
      * 网络监听者
      */
-    BaseNetCallback<T> mNetCallback = new BaseNetCallback<T>() {
+    NetCallback<T> mNetCallback = new BaseNetCallback<T>() {
         @Override
         public void onPrepare(Subscription subscription) {
             if (!mSrlRefresh.isRefreshing()) {
@@ -137,7 +138,7 @@ public class ContentLayout<T> extends FrameLayout {
          *
          * @param netCallback
          */
-        public abstract void loadData(BaseNetCallback<T> netCallback);
+        public abstract void loadData(NetCallback<T> netCallback);
 
         /**
          * 加载内容布局

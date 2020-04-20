@@ -12,6 +12,7 @@ import android.widget.FrameLayout;
 import com.fdb.baselibrary.base.BaseApplication;
 import com.fdb.baselibrary.bean.DataErrorBean;
 import com.fdb.baselibrary.network.callback.BaseNetCallback;
+import com.fdb.baselibrary.network.callback.NetCallback;
 import com.fdb.mvpdemo.R;
 import com.fdb.mvpdemo.widget.base.BaseAdapter;
 import com.fdb.mvpdemo.widget.base.MoreHolder;
@@ -112,7 +113,7 @@ public class CommonList<T, L> extends FrameLayout {
     /**
      * 网络监听者
      */
-    BaseNetCallback<T> mNetCallback = new BaseNetCallback<T>() {
+    NetCallback<T> mNetCallback = new BaseNetCallback<T>() {
         @Override
         public void onPrepare(Subscription subscription) {
             if (mPage == 1) {
@@ -174,7 +175,7 @@ public class CommonList<T, L> extends FrameLayout {
     }
 
     public interface OnListListener<T, L> {
-        public void loadData(int page, int pageSize, BaseNetCallback<T> netCallback);
+        public void loadData(int page, int pageSize, NetCallback<T> netCallback);
 
         public int getTotalPage(T data);
 

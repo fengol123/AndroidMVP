@@ -2,7 +2,7 @@ package com.fdb.mvpdemo.ui.mine.collect;
 
 import com.fdb.baselibrary.base.IBasePresenter;
 import com.fdb.baselibrary.base.IBaseView;
-import com.fdb.baselibrary.network.callback.BaseNetCallback;
+import com.fdb.baselibrary.network.callback.NetCallback;
 import com.fdb.mvpdemo.bean.HouseCollectListBean;
 
 /**
@@ -14,6 +14,6 @@ public interface CollectContract {
     }
 
     interface Presenter extends IBasePresenter<View> {
-        void getList(int page, int pageSize, BaseNetCallback<HouseCollectListBean> netCallback);
+        void getList(int page, int pageSize, NetCallback<HouseCollectListBean> netCallback);
     }
 }

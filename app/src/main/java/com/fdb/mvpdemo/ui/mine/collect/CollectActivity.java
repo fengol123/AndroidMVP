@@ -5,7 +5,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.widget.FrameLayout;
 
 import com.fdb.baselibrary.base.BaseActivity;
-import com.fdb.baselibrary.network.callback.BaseNetCallback;
+import com.fdb.baselibrary.network.callback.NetCallback;
 import com.fdb.mvpdemo.bean.HouseBean;
 import com.fdb.mvpdemo.bean.HouseCollectListBean;
 import com.fdb.mvpdemo.ui.mine.housedetail.HouseDetailActivity;
@@ -49,7 +49,7 @@ public class CollectActivity extends BaseActivity<CollectContract.Presenter> imp
     }
 
     @Override
-    public void loadData(int page, int pageSize, BaseNetCallback<HouseCollectListBean> netCallback) {
+    public void loadData(int page, int pageSize, NetCallback<HouseCollectListBean> netCallback) {
         getPresenter().getList(page, pageSize, netCallback);
     }
 
