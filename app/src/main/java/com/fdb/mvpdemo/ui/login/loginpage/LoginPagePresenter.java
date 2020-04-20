@@ -8,6 +8,7 @@ import com.fdb.baselibrary.network.callback.OldNetSubscriber;
 import com.fdb.baselibrary.network.callback.ViewNetCallback;
 import com.fdb.baselibrary.network.transformer.ThreadTransformer;
 import com.fdb.baselibrary.utils.L;
+import com.fdb.baselibrary.utils.SPUtil;
 import com.fdb.mvpdemo.bean.LoginBean;
 import com.fdb.mvpdemo.model.AppModel;
 
@@ -30,6 +31,7 @@ public class LoginPagePresenter extends BasePresenter<LoginPageContract.View> im
                     @Override
                     public void onSuccess(@NonNull LoginBean data) {
                         L.i("onSuccess");
+                        SPUtil.put("token", data.Data.Token);
                         getView().enterHome();
                     }
 
@@ -64,15 +66,4 @@ public class LoginPagePresenter extends BasePresenter<LoginPageContract.View> im
         //                }));
         //        addSubscription(subscription);
     }
-
-    //    @Override
-    //    public void onSuccess(LoginBean data) {
-    //        SPUtil.put("token", data.Data.Token);
-    //        getView().enterHome();
-    //    }
-    //
-    //    @Override
-    //    public void onDataError(ApiException error) {
-    //        getView().showError(error.message);
-    //    }
 }
