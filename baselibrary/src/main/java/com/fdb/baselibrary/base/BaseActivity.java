@@ -9,7 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.fdb.baselibrary.utils.ToastUtil;
 import com.fdb.baselibrary.widget.LoadingDialogManager;
 
-import rx.Subscription;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Activity基类 已实现以下功能
@@ -49,12 +49,12 @@ public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatAc
     }
 
     @Override
-    public void showLoading(Subscription subscription) {
+    public void showLoading(Disposable disposable) {
         if (mLoadingDialogManager == null) {
             mLoadingDialogManager = new LoadingDialogManager();
         }
 
-        mLoadingDialogManager.showLoading(this, subscription);
+        mLoadingDialogManager.showLoading(this, disposable);
     }
 
     @Override

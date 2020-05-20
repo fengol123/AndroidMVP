@@ -7,7 +7,7 @@ import com.fdb.baselibrary.base.IBaseView;
 import com.fdb.baselibrary.bean.DataErrorBean;
 import com.fdb.baselibrary.utils.StringUtils;
 
-import rx.Subscription;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Desc
@@ -16,6 +16,7 @@ import rx.Subscription;
  */
 public class ViewNetCallback<T> extends BaseNetCallback<T> {
     private final IBaseView mBaseView;
+
 
     public ViewNetCallback(IBaseView baseView) {
         mBaseView = baseView;
@@ -41,12 +42,12 @@ public class ViewNetCallback<T> extends BaseNetCallback<T> {
     }
 
     @Override
-    public void onPrepare(Subscription subscription) {
-        mBaseView.showLoading(subscription);
+    public void onPrepare(Disposable disposable){
+        mBaseView.showLoading(disposable);
     }
 
     @Override
-    public void onFinish() {
+    public void onFinish(Disposable disposable) {
         mBaseView.hideLoading();
     }
 }

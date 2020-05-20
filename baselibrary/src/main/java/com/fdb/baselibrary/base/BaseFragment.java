@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.fdb.baselibrary.utils.ToastUtil;
 
-import rx.Subscription;
+import io.reactivex.disposables.Disposable;
 
 
 public abstract class BaseFragment<P extends IBasePresenter> extends Fragment implements IBaseView {
@@ -43,10 +43,10 @@ public abstract class BaseFragment<P extends IBasePresenter> extends Fragment im
     }
 
     @Override
-    public void showLoading(Subscription subscription) {
+    public void showLoading(Disposable disposable) {
         if (getActivity() != null) {
             if (getActivity() instanceof BaseActivity) {
-                ((BaseActivity) getActivity()).showLoading(subscription);
+                ((BaseActivity) getActivity()).showLoading(disposable);
             }
         }
     }

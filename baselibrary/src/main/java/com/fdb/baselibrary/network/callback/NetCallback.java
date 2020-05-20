@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.fdb.baselibrary.bean.DataErrorBean;
 
-import rx.Subscription;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Desc
@@ -37,10 +37,10 @@ public interface NetCallback<T> {
     /**
      * 网络请求开始
      */
-    public void onPrepare(Subscription subscription);
+    public void onPrepare(Disposable disposable);
 
     /**
      * 网络请求结束，无论成功或者失败
      */
-    public void onFinish();
+    public void onFinish(Disposable disposable);
 }

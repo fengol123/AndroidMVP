@@ -23,7 +23,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.Subscription;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Desc
@@ -115,7 +115,7 @@ public class CommonList<T, L> extends FrameLayout {
      */
     NetCallback<T> mNetCallback = new BaseNetCallback<T>() {
         @Override
-        public void onPrepare(Subscription subscription) {
+        public void onPrepare(Disposable disposable) {
             if (mPage == 1) {
                 if (!mSrlRefresh.isRefreshing()) {
                     mStatusView.showLoadingView();

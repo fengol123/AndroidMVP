@@ -1,9 +1,11 @@
 package com.fdb.baselibrary.network.transformer;
 
 
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.ObservableSource;
+import io.reactivex.ObservableTransformer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
 
 /**
  * RxJava2 转换器 已实现功能有：
@@ -11,13 +13,12 @@ import rx.schedulers.Schedulers;
  * 1.任务开始显示loadingdialog, 任务结束隐藏loadingdialog
  * </pre>
  */
-public class ThreadTransformer<T> implements Observable.Transformer<T, T> {
+public class ThreadTransformer<T> implements ObservableTransformer<T, T> {
     @Override
-    public Observable<T> call(Observable<T> tObservable) {
-        return tObservable
+    public ObservableSource<T> apply(io.reactivex.Observable<T> upstream) {
+        return upstream
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
-
     }
-
 }
+

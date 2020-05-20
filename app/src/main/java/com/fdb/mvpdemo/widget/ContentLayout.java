@@ -18,7 +18,7 @@ import com.fdb.mvpdemo.widget.statusview.StatusViewBuilder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.Subscription;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Desc
@@ -81,7 +81,7 @@ public class ContentLayout<T> extends FrameLayout {
      */
     NetCallback<T> mNetCallback = new BaseNetCallback<T>() {
         @Override
-        public void onPrepare(Subscription subscription) {
+        public void onPrepare(Disposable disposable) {
             if (!mSrlRefresh.isRefreshing()) {
                 mStatusView.showLoadingView();
             }

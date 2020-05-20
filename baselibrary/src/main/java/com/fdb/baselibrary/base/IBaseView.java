@@ -1,10 +1,10 @@
 package com.fdb.baselibrary.base;
 
-import rx.Subscription;
+import io.reactivex.disposables.Disposable;
 
 public interface IBaseView {
     //显示进度中
-    void showLoading(Subscription subscription);
+    void showLoading(Disposable disposable);
 
     //隐藏进度
     void hideLoading();

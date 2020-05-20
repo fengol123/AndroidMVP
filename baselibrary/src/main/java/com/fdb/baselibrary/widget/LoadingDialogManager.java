@@ -3,7 +3,7 @@ package com.fdb.baselibrary.widget;
 import android.app.Activity;
 import android.content.DialogInterface;
 
-import rx.Subscription;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Desc
@@ -14,12 +14,12 @@ public class LoadingDialogManager {
     private LoadingDialog mLoadingDialog;
     private int mLoadingCount;
 
-    public void showLoading(Activity activity, Subscription subscription) {
+    public void showLoading(Activity activity, Disposable disposable) {
         mLoadingCount++;
         if (mLoadingDialog == null) {
             initDialog(activity);
         }
-        mLoadingDialog.addSubscription(subscription);
+        mLoadingDialog.addSubscription(disposable);
     }
 
     private void initDialog(Activity activity) {

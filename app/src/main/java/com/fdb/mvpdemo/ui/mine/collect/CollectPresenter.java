@@ -7,8 +7,6 @@ import com.fdb.baselibrary.network.transformer.ThreadTransformer;
 import com.fdb.mvpdemo.bean.HouseCollectListBean;
 import com.fdb.mvpdemo.model.AppModel;
 
-import rx.Subscription;
-
 /**
  * Desc
  * Author dontlo
@@ -18,9 +16,9 @@ public class CollectPresenter extends BasePresenter<CollectContract.View> implem
 
     @Override
     public void getList(int page, int pageSize, NetCallback<HouseCollectListBean> netCallback) {
-        Subscription subscription = AppModel.getCollectList(page, pageSize)
+        AppModel.getCollectList(page, pageSize)
                 .compose(new ThreadTransformer<HouseCollectListBean>())
-                .subscribe(new NetSubscriber<>(netCallback));
-        addSubscription(subscription);
+                .subscribe(new NetSubscriber<>(mCompositeDisposable, netCallback));
+        //        addSubscription(subscription);
     }
 }

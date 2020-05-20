@@ -1,7 +1,5 @@
 package com.fdb.baselibrary.network.callback;
 
-import android.support.annotation.NonNull;
-
 import com.fdb.baselibrary.BuildConfig;
 import com.fdb.baselibrary.Constans;
 import com.fdb.baselibrary.bean.BaseBean;
@@ -13,8 +11,9 @@ import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
-import retrofit2.adapter.rxjava.HttpException;
-import rx.Subscriber;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.observers.DisposableObserver;
+import retrofit2.HttpException;
 
 
 /**
@@ -24,10 +23,12 @@ import rx.Subscriber;
  *     2.成功时返回数据
  * </pre>
  */
-public class NetSubscriber<T extends BaseBean> extends Subscriber<T> {
+public class NetSubscriber<T extends BaseBean> extends DisposableObserver<T> {
     private NetCallback<T> mNetCallback;
+    private CompositeDisposable mCompositeDisposable;
 
-    public NetSubscriber(@NonNull NetCallback<T> netCallback) {
+    public NetSubscriber(CompositeDisposable compositeDisposable, NetCallback<T> netCallback) {
+        mCompositeDisposable = compositeDisposable;
         mNetCallback = netCallback;
     }
 
@@ -71,12 +72,17 @@ public class NetSubscriber<T extends BaseBean> extends Subscriber<T> {
 
     @Override
     final public void onStart() {
+        if(mCompositeDisposable != null){
+            mCompositeDisposable.add(this);
+        }
         mNetCallback.onPrepare(this);
     }
 
     @Override
-    final public void onCompleted() {
-        mNetCallback.onFinish();
+    public void onComplete() {
+        if(mCompositeDisposable != null){
+            mCompositeDisposable.delete(this);
+        }
+        mNetCallback.onFinish(this);
     }
-
 }

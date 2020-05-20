@@ -1,8 +1,7 @@
 package com.fdb.baselibrary.base;
 
 
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.CompositeDisposable;
 
 /**
  * Presenter基类 已实现以下功能
@@ -13,7 +12,7 @@ import rx.subscriptions.CompositeSubscription;
  */
 public class BasePresenter<T> implements IBasePresenter<T> {
     private T mView; //mvp的view
-    private CompositeSubscription mCompositeSubscription;
+    protected CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
     @Override
     public void attachView(T display) {
@@ -22,7 +21,7 @@ public class BasePresenter<T> implements IBasePresenter<T> {
 
     @Override
     public void detachView() {
-        unSubscribe();
+        dispose();
         this.mView = null;
     }
 
@@ -35,17 +34,10 @@ public class BasePresenter<T> implements IBasePresenter<T> {
         return mView;
     }
 
-    public void addSubscription(Subscription subscription) {
-        if (mCompositeSubscription == null) {
-            mCompositeSubscription = new CompositeSubscription();
-        }
-        mCompositeSubscription.add(subscription);
-    }
-
     //RxJava取消注册，以避免内存泄露
-    private void unSubscribe() {
-        if (mCompositeSubscription != null && mCompositeSubscription.hasSubscriptions()) {
-            mCompositeSubscription.unsubscribe();
+    private void dispose() {
+        if (mCompositeDisposable != null && mCompositeDisposable.size() != 0) {
+            mCompositeDisposable.dispose();
         }
     }
 }

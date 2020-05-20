@@ -9,7 +9,7 @@ import com.fdb.mvpdemo.bean.HouseCollectListBean;
 import com.fdb.mvpdemo.bean.LoginBean;
 import com.fdb.mvpdemo.service.AppService;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Desc

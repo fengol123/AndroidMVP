@@ -12,8 +12,6 @@ import com.fdb.baselibrary.utils.SPUtil;
 import com.fdb.mvpdemo.bean.LoginBean;
 import com.fdb.mvpdemo.model.AppModel;
 
-import rx.Subscription;
-
 /**
  * Desc
  * Author dontlo
@@ -24,10 +22,11 @@ public class LoginPagePresenter extends BasePresenter<LoginPageContract.View> im
     @Override
     public void login(String userName, String psw) {
 
+        //如果不提供view的情况,可以使用如下回调方式, 使用 EasyNetCallback
         //后台旧接口使用 OldNetSubscriber, 新接口使用 NetSubscriber
-        Subscription subscription = AppModel.login(userName, psw)
+        AppModel.login(userName, psw)
                 .compose(new ThreadTransformer<LoginBean>())
-                .subscribe(new OldNetSubscriber<LoginBean>(new ViewNetCallback<LoginBean>(getView()) {
+                .subscribe(new OldNetSubscriber<>(mCompositeDisposable, new ViewNetCallback<LoginBean>(getView()) {
                     @Override
                     public void onSuccess(@NonNull LoginBean data) {
                         L.i("onSuccess");
@@ -40,8 +39,6 @@ public class LoginPagePresenter extends BasePresenter<LoginPageContract.View> im
                         getView().showError(error.message);
                     }
                 }));
-        addSubscription(subscription);
-
 
 
         //如果不提供view的情况,可以使用如下回调方式, 使用 EasyNetCallback

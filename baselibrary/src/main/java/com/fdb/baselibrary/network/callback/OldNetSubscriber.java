@@ -1,11 +1,9 @@
 package com.fdb.baselibrary.network.callback;
 
-import android.support.annotation.NonNull;
-
 import com.fdb.baselibrary.BuildConfig;
-import com.fdb.baselibrary.bean.OldBaseBean;
 import com.fdb.baselibrary.bean.DataErrorBean;
 import com.fdb.baselibrary.bean.HTTPErrorBean;
+import com.fdb.baselibrary.bean.OldBaseBean;
 import com.fdb.baselibrary.utils.JsonUtils;
 import com.fdb.baselibrary.utils.L;
 import com.fdb.baselibrary.utils.StringUtils;
@@ -16,9 +14,10 @@ import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.observers.DisposableObserver;
 import okhttp3.ResponseBody;
-import retrofit2.adapter.rxjava.HttpException;
-import rx.Subscriber;
+import retrofit2.HttpException;
 
 
 /**
@@ -28,10 +27,12 @@ import rx.Subscriber;
  *     2.成功时返回数据
  * </pre>
  */
-public class OldNetSubscriber<T extends OldBaseBean> extends Subscriber<T> {
+public class OldNetSubscriber<T extends OldBaseBean> extends DisposableObserver<T> {
     private NetCallback<T> mNetCallback;
+    private CompositeDisposable mCompositeDisposable;
 
-    public OldNetSubscriber(@NonNull NetCallback<T> netCallback) {
+    public OldNetSubscriber(CompositeDisposable compositeDisposable, NetCallback<T> netCallback) {
+        mCompositeDisposable = compositeDisposable;
         mNetCallback = netCallback;
     }
 
@@ -64,8 +65,10 @@ public class OldNetSubscriber<T extends OldBaseBean> extends Subscriber<T> {
             mNetCallback.onDataError(new DataErrorBean(null, e.getMessage()));
         }
 
-        mNetCallback.onFinish();
+        mNetCallback.onFinish(this);
     }
+
+
 
     /**
      * 获取HTTP的错误信息
@@ -101,11 +104,17 @@ public class OldNetSubscriber<T extends OldBaseBean> extends Subscriber<T> {
 
     @Override
     final public void onStart() {
+        if(mCompositeDisposable != null){
+            mCompositeDisposable.add(this);
+        }
         mNetCallback.onPrepare(this);
     }
 
     @Override
-    final public void onCompleted() {
-        mNetCallback.onFinish();
+    public void onComplete() {
+        if(mCompositeDisposable != null){
+            mCompositeDisposable.delete(this);
+        }
+        mNetCallback.onFinish(this);
     }
 }

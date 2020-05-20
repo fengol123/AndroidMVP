@@ -11,7 +11,7 @@ import java.util.HashMap;
 import retrofit2.http.Body;
 import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
-import rx.Observable;
+import io.reactivex.Observable;
 
 public interface AppService {
     @POST(HostUrl.ACCOUNT_LOGIN)

@@ -7,8 +7,6 @@ import com.fdb.baselibrary.network.transformer.ThreadTransformer;
 import com.fdb.mvpdemo.bean.DemandDetail;
 import com.fdb.mvpdemo.model.AppModel;
 
-import rx.Subscription;
-
 /**
  * Desc
  * Author dontlo
@@ -18,10 +16,10 @@ public class HouseDetailPresenter extends BasePresenter<HouseDetailContract.View
 
     @Override
     public void getDetail(String id, NetCallback<DemandDetail> NetCallback) {
-        Subscription subscription = AppModel.demandDetail(id)
+        AppModel.demandDetail(id)
                 .compose(new ThreadTransformer<DemandDetail>())
-                .subscribe(new OldNetSubscriber<DemandDetail>(NetCallback));
-        addSubscription(subscription);
+                .subscribe(new OldNetSubscriber<DemandDetail>(mCompositeDisposable, NetCallback));
+        //        addSubscription(subscription);
     }
 
 }

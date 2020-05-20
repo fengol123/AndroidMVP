@@ -7,7 +7,7 @@ import com.fdb.baselibrary.bean.DataErrorBean;
 import com.fdb.baselibrary.utils.StringUtils;
 import com.fdb.baselibrary.utils.ToastUtil;
 
-import rx.Subscription;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Desc
@@ -38,13 +38,12 @@ public class EasyNetCallback<T> extends BaseNetCallback<T> {
 
     }
 
-    @Override
-    public void onPrepare(Subscription subscription) {
+    public void onPrepare(Disposable disposable){
 
     }
 
     @Override
-    public void onFinish() {
+    public void onFinish(Disposable disposable) {
 
     }
 }

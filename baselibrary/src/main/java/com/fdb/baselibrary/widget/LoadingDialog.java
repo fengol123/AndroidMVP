@@ -10,8 +10,8 @@ import android.widget.TextView;
 import com.fdb.baselibrary.R;
 import com.fdb.baselibrary.utils.L;
 
-import rx.Subscription;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * 加载中的loadingdialog
@@ -19,7 +19,7 @@ import rx.subscriptions.CompositeSubscription;
 public class LoadingDialog extends ProgressDialog {
     TextView mLoadingTextView;
     View mView;
-    private CompositeSubscription mCompositeSubscription;
+    private CompositeDisposable mCompositeDisposable;
 
     /**
      * 这里的Context 必须用actiivty 不能用applicationContext
@@ -81,18 +81,18 @@ public class LoadingDialog extends ProgressDialog {
         mLoadingTextView.setText(message);
     }
 
-    public void addSubscription(Subscription subscription) {
-        if (mCompositeSubscription == null) {
-            mCompositeSubscription = new CompositeSubscription();
+    public void addSubscription(Disposable disposable) {
+        if (mCompositeDisposable == null) {
+            mCompositeDisposable = new CompositeDisposable();
         }
-        mCompositeSubscription.add(subscription);
+        mCompositeDisposable.add(disposable);
     }
 
     //RxJava取消注册，以避免内存泄露
     private void unSubscribe() {
-        if (mCompositeSubscription != null && mCompositeSubscription.hasSubscriptions()) {
-            mCompositeSubscription.unsubscribe();
-            mCompositeSubscription = null;
+        if (mCompositeDisposable != null && mCompositeDisposable.size() > 0) {
+            mCompositeDisposable.dispose();
+            mCompositeDisposable = null;
         }
     }
 
