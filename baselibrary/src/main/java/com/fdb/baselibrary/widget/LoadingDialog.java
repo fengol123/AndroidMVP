@@ -10,7 +10,8 @@ import android.widget.TextView;
 import com.fdb.baselibrary.R;
 import com.fdb.baselibrary.utils.L;
 
-import io.reactivex.disposables.CompositeDisposable;
+import java.util.HashSet;
+
 import io.reactivex.disposables.Disposable;
 
 /**
@@ -19,7 +20,8 @@ import io.reactivex.disposables.Disposable;
 public class LoadingDialog extends ProgressDialog {
     TextView mLoadingTextView;
     View mView;
-    private CompositeDisposable mCompositeDisposable;
+    private HashSet<Disposable> mDisposables = new HashSet<>();
+    private OnEventListener mOnEventListener;
 
     /**
      * 这里的Context 必须用actiivty 不能用applicationContext
@@ -48,6 +50,14 @@ public class LoadingDialog extends ProgressDialog {
         this.setCancelable(true);
     }
 
+    public void addDisposable(Disposable disposable){
+        mDisposables.add(disposable);
+    }
+
+    public void clearDisposable(){
+        mDisposables.clear();
+    }
+
     @Override
     public void show() {
         try {
@@ -66,6 +76,7 @@ public class LoadingDialog extends ProgressDialog {
     public void dismiss() {
         try {
             super.dismiss();
+            clearDisposable();
         } catch (Exception e) {
             L.P(e);
             //捕获 IllegalArgumentException 或者 BadTokenException
@@ -81,25 +92,24 @@ public class LoadingDialog extends ProgressDialog {
         mLoadingTextView.setText(message);
     }
 
-    public void addSubscription(Disposable disposable) {
-        if (mCompositeDisposable == null) {
-            mCompositeDisposable = new CompositeDisposable();
-        }
-        mCompositeDisposable.add(disposable);
-    }
-
-    //RxJava取消注册，以避免内存泄露
-    private void unSubscribe() {
-        if (mCompositeDisposable != null && mCompositeDisposable.size() > 0) {
-            mCompositeDisposable.dispose();
-            mCompositeDisposable = null;
-        }
-    }
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        unSubscribe();
+        if(mOnEventListener != null){
+            mOnEventListener.onClose(mDisposables);
+        }
+    }
+
+    public void setOnEventListener(OnEventListener onEventListener) {
+        mOnEventListener = onEventListener;
+    }
+
+    public interface OnEventListener{
+        /**
+         * 手动关闭时回调
+         * @param disposables
+         */
+        void onClose(HashSet<Disposable> disposables);
     }
 
 }

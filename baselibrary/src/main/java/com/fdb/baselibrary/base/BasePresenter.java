@@ -1,7 +1,10 @@
 package com.fdb.baselibrary.base;
 
 
+import java.util.List;
+
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Presenter基类 已实现以下功能
@@ -15,13 +18,21 @@ public class BasePresenter<T> implements IBasePresenter<T> {
     protected CompositeDisposable mCompositeDisposable = new CompositeDisposable();
 
     @Override
+    public void disPose(List<Disposable> disposables) {
+        for (Disposable d : disposables){
+            d.dispose();
+            mCompositeDisposable.delete(d);
+        }
+    }
+
+    @Override
     public void attachView(T display) {
         this.mView = display;
     }
 
     @Override
     public void detachView() {
-        dispose();
+        disposeAll();
         this.mView = null;
     }
 
@@ -35,7 +46,7 @@ public class BasePresenter<T> implements IBasePresenter<T> {
     }
 
     //RxJava取消注册，以避免内存泄露
-    private void dispose() {
+    private void disposeAll() {
         if (mCompositeDisposable != null && mCompositeDisposable.size() != 0) {
             mCompositeDisposable.dispose();
         }

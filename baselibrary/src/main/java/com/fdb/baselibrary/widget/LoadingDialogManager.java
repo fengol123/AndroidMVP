@@ -19,7 +19,8 @@ public class LoadingDialogManager {
         if (mLoadingDialog == null) {
             initDialog(activity);
         }
-        mLoadingDialog.addSubscription(disposable);
+
+        mLoadingDialog.addDisposable(disposable);
     }
 
     private void initDialog(Activity activity) {

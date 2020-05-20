@@ -14,8 +14,9 @@ import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
+import io.reactivex.Observer;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.observers.DisposableObserver;
+import io.reactivex.disposables.Disposable;
 import okhttp3.ResponseBody;
 import retrofit2.HttpException;
 
@@ -27,13 +28,23 @@ import retrofit2.HttpException;
  *     2.成功时返回数据
  * </pre>
  */
-public class OldNetSubscriber<T extends OldBaseBean> extends DisposableObserver<T> {
+public class OldNetSubscriber<T extends OldBaseBean> implements Observer<T> {
     private NetCallback<T> mNetCallback;
     private CompositeDisposable mCompositeDisposable;
+    private Disposable mDisposable;
 
     public OldNetSubscriber(CompositeDisposable compositeDisposable, NetCallback<T> netCallback) {
         mCompositeDisposable = compositeDisposable;
         mNetCallback = netCallback;
+    }
+
+    @Override
+    public void onSubscribe(Disposable d) {
+        mDisposable = d;
+        if (mCompositeDisposable != null) {
+            mCompositeDisposable.add(mDisposable);
+        }
+        mNetCallback.onPrepare(mDisposable);
     }
 
     @Override
@@ -65,9 +76,8 @@ public class OldNetSubscriber<T extends OldBaseBean> extends DisposableObserver<
             mNetCallback.onDataError(new DataErrorBean(null, e.getMessage()));
         }
 
-        mNetCallback.onFinish(this);
+        mNetCallback.onFinish(mDisposable);
     }
-
 
 
     /**
@@ -103,18 +113,13 @@ public class OldNetSubscriber<T extends OldBaseBean> extends DisposableObserver<
     }
 
     @Override
-    final public void onStart() {
-        if(mCompositeDisposable != null){
-            mCompositeDisposable.add(this);
+    public void onComplete() {
+        if (mCompositeDisposable != null) {
+            mCompositeDisposable.delete(mDisposable);
         }
-        mNetCallback.onPrepare(this);
+        mNetCallback.onFinish(mDisposable);
     }
 
-    @Override
-    public void onComplete() {
-        if(mCompositeDisposable != null){
-            mCompositeDisposable.delete(this);
-        }
-        mNetCallback.onFinish(this);
-    }
+
+
 }
