@@ -9,9 +9,9 @@ import com.fdb.baselibrary.utils.StringUtils;
 import com.fdb.baselibrary.utils.ToastUtil;
 
 /**
- * Desc
- * Author dontlo
- * Date   2020/4/17.
+ * Desc 简单网络监听,发生网络错误会吐司
+ * Author xieguofeng
+ * Date   2020/4/15.
  */
 public class EasyNetCallback<T> extends BaseNetCallback<T> {
     public EasyNetCallback() {

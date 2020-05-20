@@ -18,11 +18,9 @@ import retrofit2.HttpException;
 
 
 /**
- * rxjava订阅观察类 已实现功能如下:
- * <pre>
- *     1.常见异常捕捉(包括null异常的捕捉)
- *     2.成功时返回数据
- * </pre>
+ * Desc 新接口的网络监听处理类
+ * Author xieguofeng
+ * Date   2020/4/15.
  */
 public class NetSubscriber<T extends BaseBean> extends DisposableObserver<T> {
     private NetCallback<T> mNetCallback;

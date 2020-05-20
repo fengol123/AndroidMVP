@@ -1,9 +1,9 @@
 package com.fdb.baselibrary.bean;
 
 /**
- * Desc
- * Author dontlo
- * Date   2020/4/16.
+ * Desc 旧接口的网络回调实体基类
+ * Author xieguofeng
+ * Date   2020/4/15.
  */
 public class OldBaseBean<T> {
     public T Data;

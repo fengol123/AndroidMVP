@@ -6,8 +6,8 @@ import com.fdb.baselibrary.bean.BaseDisposable;
 import com.fdb.baselibrary.bean.DataErrorBean;
 
 /**
- * Desc
- * Author dontlo
+ * Desc 网络统一回调接口
+ * Author xieguofeng
  * Date   2020/4/15.
  */
 public interface NetCallback<T> {

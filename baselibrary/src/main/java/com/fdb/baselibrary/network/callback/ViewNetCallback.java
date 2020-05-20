@@ -9,9 +9,9 @@ import com.fdb.baselibrary.bean.DataErrorBean;
 import com.fdb.baselibrary.utils.StringUtils;
 
 /**
- * Desc
- * Author dontlo
- * Date   2020/4/17.
+ * Desc 需要IbaseView的网络监听,自动显示loadingDialog
+ * Author xieguofeng
+ * Date   2020/4/15.
  */
 public class ViewNetCallback<T> extends BaseNetCallback<T> {
     private final IBaseView mBaseView;

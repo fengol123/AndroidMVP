@@ -1,9 +1,9 @@
 package com.fdb.baselibrary.bean;
 
 /**
- * Desc
- * Author dontlo
- * Date   2020/4/16.
+ * Desc 新接口的网络回调实体基类
+ * Author xieguofeng
+ * Date   2020/4/15.
  */
 public class BaseBean<T> {
     public boolean success;

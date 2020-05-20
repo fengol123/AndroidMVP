@@ -6,9 +6,9 @@ import android.content.DialogInterface;
 import com.fdb.baselibrary.bean.BaseDisposable;
 
 /**
- * Desc
- * Author dontlo
- * Date   2020/4/17.
+ * Desc loadingDialog的管理, 有计数器功能, 可以保证只有一个显示
+ * Author xieguofeng
+ * Date   2020/4/15.
  */
 public class LoadingDialogManager {
     private LoadingDialog mLoadingDialog;
