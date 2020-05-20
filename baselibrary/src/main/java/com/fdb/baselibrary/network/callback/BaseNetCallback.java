@@ -1,6 +1,6 @@
 package com.fdb.baselibrary.network.callback;
 
-import io.reactivex.disposables.Disposable;
+import com.fdb.baselibrary.bean.BaseDisposable;
 
 /**
  * Desc
@@ -14,12 +14,12 @@ public abstract class BaseNetCallback<T> implements NetCallback<T> {
 
     }
 
-    public void onPrepare(Disposable disposable){
+    public void onPrepare(BaseDisposable disposable){
 
     }
 
     @Override
-    public void onFinish(Disposable disposable) {
+    public void onFinish(BaseDisposable disposable) {
 
     }
 }

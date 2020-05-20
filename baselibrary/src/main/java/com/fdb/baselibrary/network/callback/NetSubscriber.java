@@ -3,6 +3,7 @@ package com.fdb.baselibrary.network.callback;
 import com.fdb.baselibrary.BuildConfig;
 import com.fdb.baselibrary.Constans;
 import com.fdb.baselibrary.bean.BaseBean;
+import com.fdb.baselibrary.bean.BaseDisposable;
 import com.fdb.baselibrary.bean.DataErrorBean;
 import com.fdb.baselibrary.utils.L;
 import com.google.gson.JsonParseException;
@@ -26,6 +27,12 @@ import retrofit2.HttpException;
 public class NetSubscriber<T extends BaseBean> extends DisposableObserver<T> {
     private NetCallback<T> mNetCallback;
     private CompositeDisposable mCompositeDisposable;
+    private BaseDisposable mBaseDisposable = new BaseDisposable(this, new BaseDisposable.OnDisposeListener() {
+        @Override
+        public void onDispose() {
+            mCompositeDisposable.delete(NetSubscriber.this);
+        }
+    });
 
     public NetSubscriber(CompositeDisposable compositeDisposable, NetCallback<T> netCallback) {
         mCompositeDisposable = compositeDisposable;
@@ -68,6 +75,8 @@ public class NetSubscriber<T extends BaseBean> extends DisposableObserver<T> {
         } else {
             mNetCallback.onDataError(new DataErrorBean(null, e.getMessage()));
         }
+
+        mNetCallback.onFinish(mBaseDisposable);
     }
 
     @Override
@@ -75,7 +84,7 @@ public class NetSubscriber<T extends BaseBean> extends DisposableObserver<T> {
         if(mCompositeDisposable != null){
             mCompositeDisposable.add(this);
         }
-        mNetCallback.onPrepare(this);
+        mNetCallback.onPrepare(mBaseDisposable);
     }
 
     @Override
@@ -83,6 +92,6 @@ public class NetSubscriber<T extends BaseBean> extends DisposableObserver<T> {
         if(mCompositeDisposable != null){
             mCompositeDisposable.delete(this);
         }
-        mNetCallback.onFinish(this);
+        mNetCallback.onFinish(mBaseDisposable);
     }
 }

@@ -9,9 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.fdb.baselibrary.bean.BaseDisposable;
 import com.fdb.baselibrary.utils.ToastUtil;
-
-import io.reactivex.disposables.Disposable;
 
 
 public abstract class BaseFragment<P extends IBasePresenter> extends Fragment implements IBaseView {
@@ -43,7 +42,7 @@ public abstract class BaseFragment<P extends IBasePresenter> extends Fragment im
     }
 
     @Override
-    public void showLoading(Disposable disposable) {
+    public void showLoading(BaseDisposable disposable) {
         if (getActivity() != null) {
             if (getActivity() instanceof BaseActivity) {
                 ((BaseActivity) getActivity()).showLoading(disposable);

@@ -8,10 +8,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.fdb.baselibrary.R;
+import com.fdb.baselibrary.bean.BaseDisposable;
 import com.fdb.baselibrary.utils.L;
 
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
+import java.util.HashSet;
 
 /**
  * 加载中的loadingdialog
@@ -19,7 +19,7 @@ import io.reactivex.disposables.Disposable;
 public class LoadingDialog extends ProgressDialog {
     TextView mLoadingTextView;
     View mView;
-    private CompositeDisposable mCompositeDisposable;
+    private HashSet<BaseDisposable> mBaseDisposables = new HashSet<>();
 
     /**
      * 这里的Context 必须用actiivty 不能用applicationContext
@@ -70,6 +70,7 @@ public class LoadingDialog extends ProgressDialog {
             L.P(e);
             //捕获 IllegalArgumentException 或者 BadTokenException
         }
+        mBaseDisposables.clear();
     }
 
     public void setMessage(String message) {
@@ -81,25 +82,22 @@ public class LoadingDialog extends ProgressDialog {
         mLoadingTextView.setText(message);
     }
 
-    public void addSubscription(Disposable disposable) {
-        if (mCompositeDisposable == null) {
-            mCompositeDisposable = new CompositeDisposable();
-        }
-        mCompositeDisposable.add(disposable);
+    public void addSubscription(BaseDisposable disposable) {
+        mBaseDisposables.add(disposable);
     }
 
     //RxJava取消注册，以避免内存泄露
     private void unSubscribe() {
-        if (mCompositeDisposable != null && mCompositeDisposable.size() > 0) {
-            mCompositeDisposable.dispose();
-            mCompositeDisposable = null;
+        for(BaseDisposable d : mBaseDisposables){
+            d.dispose();
         }
+        mBaseDisposables.clear();
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         unSubscribe();
+        super.onBackPressed();
     }
 
 }

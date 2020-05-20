@@ -2,9 +2,8 @@ package com.fdb.baselibrary.network.callback;
 
 import android.support.annotation.NonNull;
 
+import com.fdb.baselibrary.bean.BaseDisposable;
 import com.fdb.baselibrary.bean.DataErrorBean;
-
-import io.reactivex.disposables.Disposable;
 
 /**
  * Desc
@@ -37,10 +36,10 @@ public interface NetCallback<T> {
     /**
      * 网络请求开始
      */
-    public void onPrepare(Disposable disposable);
+    public void onPrepare(BaseDisposable disposable);
 
     /**
      * 网络请求结束，无论成功或者失败
      */
-    public void onFinish(Disposable disposable);
+    public void onFinish(BaseDisposable disposable);
 }

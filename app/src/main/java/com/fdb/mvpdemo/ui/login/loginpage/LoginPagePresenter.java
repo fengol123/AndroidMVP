@@ -21,7 +21,6 @@ public class LoginPagePresenter extends BasePresenter<LoginPageContract.View> im
 
     @Override
     public void login(String userName, String psw) {
-
         //如果不提供view的情况,可以使用如下回调方式, 使用 EasyNetCallback
         //后台旧接口使用 OldNetSubscriber, 新接口使用 NetSubscriber
         AppModel.login(userName, psw)
@@ -39,6 +38,28 @@ public class LoginPagePresenter extends BasePresenter<LoginPageContract.View> im
                         getView().showError(error.message);
                     }
                 }));
+
+
+//        AppModel.getCollectList(1, 10)
+//                .map(new Function<HouseCollectListBean, HouseCollectListBean>() {
+//                    @Override
+//                    public HouseCollectListBean apply(HouseCollectListBean houseCollectListBean) throws Exception {
+//                        Thread.sleep(3000);
+//                        return houseCollectListBean;
+//                    }
+//                })
+//                .compose(new ThreadTransformer<HouseCollectListBean>())
+//                .subscribe(new NetSubscriber<>(mCompositeDisposable, new ViewNetCallback<HouseCollectListBean>(getView()){
+//                    @Override
+//                    public void onSuccess(@NonNull HouseCollectListBean data) {
+//                        ToastUtil.s("加载成功");
+//                    }
+//
+//                    @Override
+//                    public void onDataError(@NonNull DataErrorBean error) {
+//                        getView().showError(error.message);
+//                    }
+//                }));
 
 
         //如果不提供view的情况,可以使用如下回调方式, 使用 EasyNetCallback

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.fdb.baselibrary.base.BaseApplication;
+import com.fdb.baselibrary.bean.BaseDisposable;
 import com.fdb.baselibrary.bean.DataErrorBean;
 import com.fdb.baselibrary.network.callback.BaseNetCallback;
 import com.fdb.baselibrary.network.callback.NetCallback;
@@ -23,7 +24,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.disposables.Disposable;
 
 /**
  * Desc
@@ -115,7 +115,7 @@ public class CommonList<T, L> extends FrameLayout {
      */
     NetCallback<T> mNetCallback = new BaseNetCallback<T>() {
         @Override
-        public void onPrepare(Disposable disposable) {
+        public void onPrepare(BaseDisposable disposable) {
             if (mPage == 1) {
                 if (!mSrlRefresh.isRefreshing()) {
                     mStatusView.showLoadingView();

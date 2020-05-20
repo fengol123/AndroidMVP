@@ -3,11 +3,10 @@ package com.fdb.baselibrary.network.callback;
 import android.support.annotation.NonNull;
 
 import com.fdb.baselibrary.R;
+import com.fdb.baselibrary.bean.BaseDisposable;
 import com.fdb.baselibrary.bean.DataErrorBean;
 import com.fdb.baselibrary.utils.StringUtils;
 import com.fdb.baselibrary.utils.ToastUtil;
-
-import io.reactivex.disposables.Disposable;
 
 /**
  * Desc
@@ -38,12 +37,12 @@ public class EasyNetCallback<T> extends BaseNetCallback<T> {
 
     }
 
-    public void onPrepare(Disposable disposable){
+    public void onPrepare(BaseDisposable disposable){
 
     }
 
     @Override
-    public void onFinish(Disposable disposable) {
+    public void onFinish(BaseDisposable disposable) {
 
     }
 }

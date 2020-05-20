@@ -3,7 +3,7 @@ package com.fdb.baselibrary.widget;
 import android.app.Activity;
 import android.content.DialogInterface;
 
-import io.reactivex.disposables.Disposable;
+import com.fdb.baselibrary.bean.BaseDisposable;
 
 /**
  * Desc
@@ -14,7 +14,7 @@ public class LoadingDialogManager {
     private LoadingDialog mLoadingDialog;
     private int mLoadingCount;
 
-    public void showLoading(Activity activity, Disposable disposable) {
+    public void showLoading(Activity activity, BaseDisposable disposable) {
         mLoadingCount++;
         if (mLoadingDialog == null) {
             initDialog(activity);

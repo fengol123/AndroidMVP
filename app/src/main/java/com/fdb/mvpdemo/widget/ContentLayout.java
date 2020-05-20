@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.fdb.baselibrary.base.BaseApplication;
+import com.fdb.baselibrary.bean.BaseDisposable;
 import com.fdb.baselibrary.bean.DataErrorBean;
 import com.fdb.baselibrary.network.callback.BaseNetCallback;
 import com.fdb.baselibrary.network.callback.NetCallback;
@@ -18,7 +19,6 @@ import com.fdb.mvpdemo.widget.statusview.StatusViewBuilder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.disposables.Disposable;
 
 /**
  * Desc
@@ -81,7 +81,7 @@ public class ContentLayout<T> extends FrameLayout {
      */
     NetCallback<T> mNetCallback = new BaseNetCallback<T>() {
         @Override
-        public void onPrepare(Disposable disposable) {
+        public void onPrepare(BaseDisposable disposable) {
             if (!mSrlRefresh.isRefreshing()) {
                 mStatusView.showLoadingView();
             }

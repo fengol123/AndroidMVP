@@ -1,10 +1,10 @@
 package com.fdb.baselibrary.base;
 
-import io.reactivex.disposables.Disposable;
+import com.fdb.baselibrary.bean.BaseDisposable;
 
 public interface IBaseView {
     //显示进度中
-    void showLoading(Disposable disposable);
+    void showLoading(BaseDisposable disposable);
 
     //隐藏进度
     void hideLoading();

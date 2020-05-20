@@ -6,10 +6,9 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import com.fdb.baselibrary.bean.BaseDisposable;
 import com.fdb.baselibrary.utils.ToastUtil;
 import com.fdb.baselibrary.widget.LoadingDialogManager;
-
-import io.reactivex.disposables.Disposable;
 
 /**
  * Activity基类 已实现以下功能
@@ -49,7 +48,7 @@ public abstract class BaseActivity<P extends IBasePresenter> extends AppCompatAc
     }
 
     @Override
-    public void showLoading(Disposable disposable) {
+    public void showLoading(BaseDisposable disposable) {
         if (mLoadingDialogManager == null) {
             mLoadingDialogManager = new LoadingDialogManager();
         }

@@ -4,10 +4,9 @@ import android.support.annotation.NonNull;
 
 import com.fdb.baselibrary.R;
 import com.fdb.baselibrary.base.IBaseView;
+import com.fdb.baselibrary.bean.BaseDisposable;
 import com.fdb.baselibrary.bean.DataErrorBean;
 import com.fdb.baselibrary.utils.StringUtils;
-
-import io.reactivex.disposables.Disposable;
 
 /**
  * Desc
@@ -42,12 +41,12 @@ public class ViewNetCallback<T> extends BaseNetCallback<T> {
     }
 
     @Override
-    public void onPrepare(Disposable disposable){
+    public void onPrepare(BaseDisposable disposable){
         mBaseView.showLoading(disposable);
     }
 
     @Override
-    public void onFinish(Disposable disposable) {
+    public void onFinish(BaseDisposable disposable) {
         mBaseView.hideLoading();
     }
 }
