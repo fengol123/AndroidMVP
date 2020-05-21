@@ -1,29 +1,14 @@
 package com.fdb.mvpdemo.ui.login.loginpage
 
 import android.content.Intent
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import butterknife.BindView
+import android.view.View
 import butterknife.ButterKnife
-import butterknife.OnClick
 import com.fdb.baselibrary.base.BaseActivity
 import com.fdb.mvpdemo.R
 import com.fdb.mvpdemo.ui.mine.collect.CollectActivity
+import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginPageActivity : BaseActivity<LoginPageContract.Presenter?>(), LoginPageContract.View {
-    @JvmField
-    @BindView(R.id.et_username)
-    var mEtUsername: EditText? = null
-    @JvmField
-    @BindView(R.id.et_psw)
-    var mEtPsw: EditText? = null
-    @JvmField
-    @BindView(R.id.tv_tips)
-    var mTvTips: TextView? = null
-    @JvmField
-    @BindView(R.id.btn_login)
-    var mBtnLogin: Button? = null
 
     override fun createPresenter(): LoginPageContract.Presenter {
         return LoginPagePresenter()
@@ -35,10 +20,16 @@ class LoginPageActivity : BaseActivity<LoginPageContract.Presenter?>(), LoginPag
 
     override fun initialize() {
         ButterKnife.bind(this)
+
+        btn_login.setOnClickListener(View.OnClickListener {
+            val userName = et_username!!.text.toString()
+            val psw = et_psw!!.text.toString()
+            presenter!!.login(userName, psw)
+        })
     }
 
     override fun showError(msg: String) {
-        mTvTips!!.text = msg
+        tv_tips!!.text = msg
     }
 
     override fun enterHome() {
@@ -47,10 +38,4 @@ class LoginPageActivity : BaseActivity<LoginPageContract.Presenter?>(), LoginPag
         finish()
     }
 
-    @OnClick(R.id.btn_login)
-    fun onViewClicked() {
-        val userName = mEtUsername!!.text.toString()
-        val psw = mEtPsw!!.text.toString()
-        presenter!!.login(userName, psw)
-    }
 }

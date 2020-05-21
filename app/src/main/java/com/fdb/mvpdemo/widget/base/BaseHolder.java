@@ -5,10 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
-
 import com.fdb.baselibrary.base.BaseApplication;
-
-import butterknife.ButterKnife;
 
 /**
  * Created by xieguofeng on 2018/7/16
@@ -31,7 +28,6 @@ public abstract class BaseHolder<T> extends RecyclerView.ViewHolder {
         mRootView = View.inflate(context, getLayoutId(), null);
         ViewGroup viewGroup = (ViewGroup) itemView;
         viewGroup.addView(mRootView);
-        ButterKnife.bind(this, mRootView);
 
         mRootView.setOnClickListener(new View.OnClickListener() {
             @Override
