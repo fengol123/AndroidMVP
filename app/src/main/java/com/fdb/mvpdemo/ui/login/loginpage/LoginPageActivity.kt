@@ -12,12 +12,16 @@ import com.fdb.mvpdemo.R
 import com.fdb.mvpdemo.ui.mine.collect.CollectActivity
 
 class LoginPageActivity : BaseActivity<LoginPageContract.Presenter?>(), LoginPageContract.View {
+    @JvmField
     @BindView(R.id.et_username)
     var mEtUsername: EditText? = null
+    @JvmField
     @BindView(R.id.et_psw)
     var mEtPsw: EditText? = null
+    @JvmField
     @BindView(R.id.tv_tips)
     var mTvTips: TextView? = null
+    @JvmField
     @BindView(R.id.btn_login)
     var mBtnLogin: Button? = null
 
